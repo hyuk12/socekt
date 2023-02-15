@@ -7,14 +7,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
+
 import java.util.List;
 
-import org.example.dto.request.LoginReqDto;
+import org.example.controller.ServerController;
+
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.LoginRespDto;
-import org.example.dto.response.ResponseDto;
-import org.example.service.SendService;
+
+
 
 import com.google.gson.Gson;
 
@@ -26,14 +27,15 @@ public class ServerThread extends Thread{
 	private Socket socket;
 	private InputStream inputStream;
 	private Gson gson;
-	private SendService sendService;
+	
+	private ServerController serverController;
 	
 	private String nickname;
 	
 	public ServerThread(Socket socket) {
 		this.socket = socket;
 		this.gson = new Gson();
-		socketList.add(this);
+		this.serverController = new ServerController(socket);
 	}
 
 	@Override
@@ -49,20 +51,11 @@ public class ServerThread extends Thread{
 				
 				switch (requestDto.getResource()) {
 				case "login":
-					LoginReqDto loginReqDto = gson.fromJson(requestDto.getBody(), LoginReqDto.class);
-					nickname = loginReqDto.getNickname();
-					
-					List<String> userList = new ArrayList<>();
-					
-					for(ServerThread thread : socketList) {
-						userList.add(thread.getNickname());
-					}
-					
-					LoginRespDto loginRespDto = new LoginRespDto(nickname + "님이 접속 하셨습니다.");
-					sendService.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
-					
+					LoginRespDto loginRespDto = serverController.loginUser(requestDto);
+					serverController.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
 					break;
 
+				case "message":
 				default:
 					break;
 				}
