@@ -21,7 +21,6 @@ import lombok.Getter;
 public class ServerUtil {
 	private final Gson gson;
 
-	
 	public LoginRespDto loginUser(RequestDto requestDto) {
 
 		LoginReqDto loginReqDto = gson.fromJson(requestDto.getBody(), LoginReqDto.class);

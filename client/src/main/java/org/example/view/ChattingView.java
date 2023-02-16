@@ -4,9 +4,22 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,26 +27,16 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import javax.swing.JList;
-import javax.swing.UIManager;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import java.awt.Component;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import javax.swing.border.EmptyBorder;
+
+import org.example.dto.LoginReqDto;
+import org.example.dto.RequestDto;
+import org.example.viewcontroller.ClientRecive;
+
+import com.google.gson.Gson;
 
 public class ChattingView extends JFrame {
 
@@ -41,6 +44,13 @@ public class ChattingView extends JFrame {
 
 	private JTextField usernameField;
 	private JTextField massageInput;
+
+	private String nickname;
+	
+	private Gson gson;
+	
+	
+	private Socket socket;
 
 
 	/**
@@ -63,7 +73,8 @@ public class ChattingView extends JFrame {
 	 * Create the frame.
 	 */
 	public ChattingView() {
-
+		gson = new Gson();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 800);
 		contentPane = new JPanel();
@@ -92,12 +103,62 @@ public class ChattingView extends JFrame {
 		usernameField.setColumns(10);
 		
 		JButton loginButton = new JButton("카카오로 시작하기");
+		loginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		loginButton.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				String ip = "127.0.0.1";
+				int port = 8888;
+				
+				if(socket != null) {
+					return;
+				} else {
+					
+					try {
+						socket = new Socket(ip, port);
+						ClientRecive clientRecive = new ClientRecive(socket);
+						
+						while(true) {
+							clientRecive.start();
+							System.out.println("연결됨");
+							
+							
+							try {
+								nickname = usernameField.getText();
+								LoginReqDto loginReqDto = new LoginReqDto(nickname);
+								String loginJson = gson.toJson(loginReqDto);
+								RequestDto requestDto = new RequestDto("login", loginJson);
+								String requestJson = gson.toJson(requestDto);
+								
+								OutputStream outputStream = socket.getOutputStream();
+								PrintWriter writer = new PrintWriter(outputStream, true);
+								writer.println(requestJson);
+								
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+						
+					} catch (UnknownHostException e2) {
+					
+						e2.printStackTrace();
+					} catch (IOException e2) {
+					
+						e2.printStackTrace();
+					}
+				
+				}
+				
+				
+			
 			}
 		});
+		
 		loginButton.setIcon(new ImageIcon(ChattingView.class.getResource("/org/example/image/kakao_login_large_wide.png")));
 		loginButton.setForeground(new Color(0, 0, 0));
 		loginButton.setBackground(new Color(0, 51, 255));
