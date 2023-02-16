@@ -6,11 +6,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,8 +18,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import org.example.viewcontroller.ClientRecive;
 
 public class ChattingView extends JFrame {
 
@@ -74,33 +67,6 @@ public class ChattingView extends JFrame {
 		textField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("카카오로 시작하기");
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			//지워야됨 마우스클릭 메소드
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String ip = "127.0.0.1";
-				int port = 8888;
-				
-				try {
-					Socket socket = new Socket(ip, port);
-					ClientRecive clinentRecive = new ClientRecive(socket);
-					while(true){
-						clinentRecive.start();
-						System.out.println("연결됨");
-					}
-					
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
-			
-			}
-		});
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}

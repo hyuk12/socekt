@@ -24,8 +24,6 @@ public class ClientRecive extends Thread{
 	private Gson gson;
 
 	
-		
-	
 	@Override
 	public void run() {
 		try {
@@ -42,7 +40,7 @@ public class ClientRecive extends Thread{
 				case "login" :
 					LoginRespDto loginRespDto = 
 						gson.fromJson(responseDto.getBody(), LoginRespDto.class);
-					//ChattingView가 싱글톤? , ChattingView에 연결한 뒤 welcomemessage띄워줘야함
+					//Chatti? ngView가 싱글톤, ChattingView에 연결한 뒤 welcomemessage띄워줘야함
 					break;
 				case "message" :
 					MessageRespDto messageRespDto = gson.fromJson(responseDto.getBody(), MessageRespDto.class);
