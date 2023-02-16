@@ -29,12 +29,12 @@ public class Server {
 			while(true) {
 				socket = serverSocket.accept();
 				
-				boolean connected = socket.isConnected() && !socket.isClosed();
-				if(connected) {					
+//				boolean connected = socket.isConnected() && !socket.isClosed();
+//				if(connected) {					
 					serverThread = new ServerThread(socket);
 					serverThread.start();
-					
-				}
+//					
+//				}
 				
 			}
 		} catch (IOException e) {
