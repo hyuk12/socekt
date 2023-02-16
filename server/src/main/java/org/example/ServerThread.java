@@ -11,8 +11,7 @@ import java.util.List;
 
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.LoginRespDto;
-
-
+import org.example.utill.ServerUtill;
 
 import com.google.gson.Gson;
 
@@ -27,7 +26,9 @@ public class ServerThread extends Thread{
 	private InputStream inputStream;
 	private Gson gson;
 	
+
 	private ServerUtil serverService;
+
 	
 	private String nickname;
 	
@@ -35,6 +36,7 @@ public class ServerThread extends Thread{
 		this.socket = socket;
 		this.gson = new Gson();
 		socketList.add(this);
+
 	}
 
 	@Override
