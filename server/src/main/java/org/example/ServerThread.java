@@ -21,9 +21,7 @@ import org.example.util.ServerUtil;
 @Getter
 public class ServerThread extends Thread{
 	@Getter
-
 	private static List<ServerThread> socketList = new ArrayList<ServerThread>();
-
 	private Socket socket;
 	private InputStream inputStream;
 	private Gson gson;
