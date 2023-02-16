@@ -74,6 +74,7 @@ public class ChattingView extends JFrame {
 		contentPane.setLayout(new CardLayout(0, 0));
 		
 
+
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(new Color(255, 255, 51));
 		contentPane.add(mainPanel, "name_4791122600800");
@@ -172,6 +173,7 @@ public class ChattingView extends JFrame {
 		
 		JTextArea contentView = new JTextArea();
 		contentScroll.setViewportView(contentView);
+
 		
 		JScrollPane messageScroll = new JScrollPane();
 		messageScroll.setBounds(0, 676, 392, 77);
@@ -208,6 +210,7 @@ public class ChattingView extends JFrame {
 		commnicativeTitle.setBounds(108, 0, 236, 77);
 		chattingPanel.add(commnicativeTitle);
 		
+
 		JLabel iconLalbel_2 = new JLabel("");
 		iconLalbel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		iconLalbel_2.setBounds(32, 17, 52, 52);
