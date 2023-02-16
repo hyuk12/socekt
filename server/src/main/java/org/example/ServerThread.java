@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.LoginRespDto;
-import org.example.utill.ServerUtill;
+import org.example.dto.response.MessageRespDto;
 
 import com.google.gson.Gson;
 
@@ -27,7 +27,7 @@ public class ServerThread extends Thread{
 	private Gson gson;
 	
 
-	private ServerUtil serverService;
+	private ServerUtil serverUtil;
 
 	
 	private String nickname;
@@ -36,7 +36,7 @@ public class ServerThread extends Thread{
 		this.socket = socket;
 		this.gson = new Gson();
 		socketList.add(this);
-
+		serverUtil = new ServerUtil(gson);
 	}
 
 	@Override
@@ -52,11 +52,12 @@ public class ServerThread extends Thread{
 				
 				switch (requestDto.getResource()) {
 				case "login":
-					LoginRespDto loginRespDto = serverService.loginUser(requestDto);
-					serverService.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
+					LoginRespDto loginRespDto = serverUtil.loginUser(requestDto);
+					serverUtil.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
 					break;
 
 				case "message":
+
 				default:
 					break;
 				}
