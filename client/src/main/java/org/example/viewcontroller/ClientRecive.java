@@ -27,7 +27,6 @@ public class ClientRecive extends Thread{
 	@Override
 	public void run() {
 		try {
-			
 			inputStream = socket.getInputStream();
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			gson = new Gson();
@@ -38,8 +37,8 @@ public class ClientRecive extends Thread{
 				
 				switch(responseDto.getResource()) {
 				case "login" :
-					LoginRespDto loginRespDto = 
-						gson.fromJson(responseDto.getBody(), LoginRespDto.class);
+					LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
+					System.out.println("로그인됨");
 					//Chatti? ngView가 싱글톤, ChattingView에 연결한 뒤 welcomemessage띄워줘야함
 					break;
 				case "message" :
