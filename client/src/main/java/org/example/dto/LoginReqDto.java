@@ -1,12 +1,11 @@
-package org.example.dto.request;
+package org.example.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class LoginReqDto {
 	private String nickname;
+	
 }

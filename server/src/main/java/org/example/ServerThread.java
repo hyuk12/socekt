@@ -5,18 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.LoginRespDto;
-import org.example.utill.ServerUtill;
+import org.example.util.ServerUtil;
 
 import com.google.gson.Gson;
 
 import lombok.Getter;
-import org.example.util.ServerUtil;
 
 @Getter
 public class ServerThread extends Thread{
@@ -36,6 +34,7 @@ public class ServerThread extends Thread{
 		this.socket = socket;
 		this.gson = new Gson();
 		socketList.add(this);
+		this.serverService = new ServerUtil(gson);
 
 	}
 
