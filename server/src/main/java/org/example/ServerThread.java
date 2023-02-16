@@ -4,13 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import org.example.controller.ServerController;
 
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.LoginRespDto;
@@ -20,22 +17,24 @@ import org.example.dto.response.LoginRespDto;
 import com.google.gson.Gson;
 
 import lombok.Getter;
+import org.example.util.ServerUtil;
 
 @Getter
 public class ServerThread extends Thread{
-	private List<ServerThread> socketList; 
+	@Getter
+	private static List<ServerThread> socketList = new ArrayList<ServerThread>();
 	private Socket socket;
 	private InputStream inputStream;
 	private Gson gson;
 	
-	private ServerController serverController;
+	private ServerUtil serverService;
 	
 	private String nickname;
 	
 	public ServerThread(Socket socket) {
 		this.socket = socket;
 		this.gson = new Gson();
-		this.serverController = new ServerController(socket);
+		socketList.add(this);
 	}
 
 	@Override
@@ -51,8 +50,8 @@ public class ServerThread extends Thread{
 				
 				switch (requestDto.getResource()) {
 				case "login":
-					LoginRespDto loginRespDto = serverController.loginUser(requestDto);
-					serverController.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
+					LoginRespDto loginRespDto = serverService.loginUser(requestDto);
+					serverService.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
 					break;
 
 				case "message":
