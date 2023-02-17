@@ -38,6 +38,12 @@ import org.example.dto.RequestDto;
 import org.example.viewcontroller.ClientRecive;
 
 import com.google.gson.Gson;
+import lombok.Getter;
+
+@Getter
+
+
+
 
 import lombok.Data;
 import lombok.Getter;
@@ -59,13 +65,15 @@ public class ChattingView extends JFrame {
 	
 	private JTextField usernameField;
 	private JTextField massageInput;
-	
+
 	private CardLayout mainCard; //cardChange
 	private String nickname;
 	private Gson gson;
 	private Socket socket;
+
 	
 	private JTextArea userArea;
+
 	private JTextArea contentView;
 
 	/**
@@ -94,7 +102,9 @@ public class ChattingView extends JFrame {
 		setBounds(100, 100, 480, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
 		mainCard = new CardLayout();
+
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(mainCard);
@@ -130,9 +140,11 @@ public class ChattingView extends JFrame {
 		
 			@Override
 			public void mouseClicked(MouseEvent e) {		//마우스 클릭 로그인
+
 				login();
 				mainCard.show(contentPane, "userListPanel");
 				clearFeild(usernameField);
+
 			}
 		});
 		
@@ -164,7 +176,9 @@ public class ChattingView extends JFrame {
 		
 		setVisible(true);
 		mainPanel.add(mainIcon);
+
 		userListPanel = new JPanel();
+
 		userListPanel.setBackground(new Color(255, 255, 51));
 		contentPane.add(userListPanel, "userListPanel");
 		userListPanel.setLayout(null);
@@ -273,6 +287,7 @@ public class ChattingView extends JFrame {
 			try {
 				socket = new Socket(ip, port);
 				ClientRecive clientRecive = new ClientRecive(socket);
+
 				clientRecive.start();
 				
 				System.out.println("연결됨");
@@ -290,6 +305,7 @@ public class ChattingView extends JFrame {
 					
 				} catch (IOException e1) {
 					e1.printStackTrace();
+
 				}
 				
 			} catch (UnknownHostException e2) {
@@ -304,9 +320,11 @@ public class ChattingView extends JFrame {
 		
 	}
 
+
 	private void clearFeild (JTextField textField) {
 		textField.getText().isEmpty();
 		textField.setText("");
 	}
+
 	
 }
