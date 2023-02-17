@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class MessageRespDto {
-	private String toUser;
-	private String messageValue;
+public class CreateRoomRespDto {
+	private String title;
+	private String createMessage;
 }
