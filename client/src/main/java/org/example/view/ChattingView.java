@@ -38,6 +38,8 @@ import org.example.viewcontroller.ClientRecive;
 
 import com.google.gson.Gson;
 
+import lombok.Getter;
+
 public class ChattingView extends JFrame {
 
 	private JPanel contentPane;
