@@ -1,8 +1,7 @@
 package org.example.view;
 
-import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
+
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -22,35 +21,35 @@ import java.net.UnknownHostException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+
+
 import javax.swing.border.EmptyBorder;
 
-import org.example.dto.LoginReqDto;
-import org.example.dto.RequestDto;
-import org.example.viewcontroller.ClientRecive;
+import com.google.gson.JsonObject;
+
+import java.awt.CardLayout;
+import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+import javax.swing.UIManager;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import com.google.gson.Gson;
 
 public class ChattingView extends JFrame {
 
 	private JPanel contentPane;
-
 	private JTextField usernameField;
 	private JTextField massageInput;
 
-	private String nickname;
-	
-	private Gson gson;
-	
-	
-	private Socket socket;
 
 
 	/**
@@ -73,14 +72,13 @@ public class ChattingView extends JFrame {
 	 * Create the frame.
 	 */
 	public ChattingView() {
-		gson = new Gson();
-		
+
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
 		
@@ -186,6 +184,7 @@ public class ChattingView extends JFrame {
 		
 		setVisible(true);
 		mainPanel.add(mainIcon);
+		
 		JPanel userListPanel = new JPanel();
 		userListPanel.setBackground(new Color(255, 255, 51));
 		contentPane.add(userListPanel, "name_5238560318400");
@@ -198,12 +197,14 @@ public class ChattingView extends JFrame {
 		JScrollPane userListScroll = new JScrollPane();
 		userListScroll.setBounds(91, 0, 365, 753);
 		userListPanel.add(userListScroll);
+		
 		JList userList = new JList();
 		userListScroll.setViewportView(userList);
 		
 		JLabel iconLabel = new JLabel("New label");
 		iconLabel.setBounds(12, 27, 65, 53);
 		userListPanel.add(iconLabel);
+		
 		JButton addRoomButton = new JButton("");
 		addRoomButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -263,7 +264,7 @@ public class ChattingView extends JFrame {
 		commnicativeTitle.setFont(new Font("LG Smart UI SemiBold", Font.PLAIN, 25));
 		commnicativeTitle.setBounds(108, 0, 236, 77);
 		chattingPanel.add(commnicativeTitle);
-    
+		
 		JLabel iconLalbel_2 = new JLabel("");
 		iconLalbel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		iconLalbel_2.setBounds(32, 17, 52, 52);
