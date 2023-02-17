@@ -7,8 +7,10 @@ import java.io.PrintWriter;
 
 import lombok.RequiredArgsConstructor;
 import org.example.ServerThread;
+import org.example.dto.request.CreateRoomReqDto;
 import org.example.dto.request.LoginReqDto;
 import org.example.dto.request.RequestDto;
+import org.example.dto.response.CreateRoomRespDto;
 import org.example.dto.response.LoginRespDto;
 import org.example.dto.response.ResponseDto;
 
@@ -50,6 +52,17 @@ public class ServerUtil {
 
 				writer.println(gson.toJson(responseDto));
 			}
+		}
+	}
+
+	public void createRoom(String resource,  String status, String body) throws IOException {
+		ResponseDto responseDto = new ResponseDto(resource, status, body);
+
+		for (ServerThread thread : ServerThread.getSocketList()) {
+			OutputStream outputStream = thread.getSocket().getOutputStream();
+			PrintWriter writer = new PrintWriter(outputStream, true);
+
+			writer.println(gson.toJson(responseDto));
 		}
 	}
 	
