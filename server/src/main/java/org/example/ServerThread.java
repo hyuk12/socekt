@@ -12,6 +12,7 @@ import org.example.dto.request.CreateRoomReqDto;
 import org.example.dto.request.MessageReqDto;
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.CreateRoomRespDto;
+import org.example.dto.response.JoinRoomRespDto;
 import org.example.dto.response.LoginRespDto;
 
 import org.example.dto.response.MessageRespDto;
@@ -74,6 +75,8 @@ public class ServerThread extends Thread{
 						MessageRespDto messageRespDto = new MessageRespDto(message);
 						serverUtil.sendToUser(requestDto.getResource(), "ok", gson.toJson(messageRespDto), messageReqDto.getToUser());
 					}
+					break;
+
 					case "createRoom":
 						CreateRoomReqDto createRoomReqDto = gson.fromJson(request, CreateRoomReqDto.class);
 
@@ -82,6 +85,15 @@ public class ServerThread extends Thread{
 						CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(createRoomName, createMessage);
 
 						serverUtil.createRoom(requestDto.getResource(), "ok", gson.toJson(createRoomRespDto));
+						break;
+
+					case "joinRoom":
+						JoinRoomRespDto joinRoomRespDto = new JoinRoomRespDto(nickname);
+
+						break;
+
+					case "deleteRoom":
+
 
 				default:
 					break;
