@@ -1,24 +1,25 @@
 package org.example.viewcontroller;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import org.example.dto.CreateRoomRespDto;
+
 import org.example.dto.LoginRespDto;
 import org.example.dto.MessageRespDto;
 import org.example.dto.ResponseDto;
+import org.example.view.ChattingClient;
 import org.example.view.ChattingView;
 
 import com.google.gson.Gson;
 
-import lombok.Data;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Data
 public class ClientRecive extends Thread{
 
 	private final Socket socket;
@@ -48,16 +49,16 @@ public class ClientRecive extends Thread{
 						MessageRespDto messageRespDto = gson.fromJson(responseDto.getBody(), MessageRespDto.class);
 						
 						//채팅창에 toUser + Message 띄워줌
-						ChattingView.getInstance().getContentView().append(messageRespDto.getToUser() + " :" + messageRespDto.getMessageValue() + "\n"); 
+					ChattingClient.getInstance().getContentView().append(messageRespDto.getToUser() + " :" + messageRespDto.getMessageValue() + "\n"); 
 						
 
 						break;
 						
 					case "createRoom":
-						CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class );
+//						CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class );
 						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
 						
-						ChattingView.getInstance().getUserArea().append(createRoomRespDto.getCreateMessage());
+//						ChattingView.getInstance().getUserArea().append(createRoomRespDto.getCreateMessage());
 						
 						break;
 				
