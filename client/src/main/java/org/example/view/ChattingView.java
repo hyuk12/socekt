@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -43,6 +44,11 @@ import lombok.Getter;
 
 
 
+
+import lombok.Data;
+import lombok.Getter;
+
+@Getter
 public class ChattingView extends JFrame {
 
 	private static ChattingView instance = null;
@@ -55,12 +61,18 @@ public class ChattingView extends JFrame {
 	}
 	
 	private JPanel contentPane;
+	private JPanel userListPanel;
+	
 	private JTextField usernameField;
 	private JTextField massageInput;
+
 	private CardLayout mainCard; //cardChange
 	private String nickname;
 	private Gson gson;
 	private Socket socket;
+
+	
+	private JTextArea userArea;
 
 	private JTextArea contentView;
 
@@ -91,9 +103,11 @@ public class ChattingView extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+		mainCard = new CardLayout();
+
 		
 		setContentPane(contentPane);
-		contentPane.setLayout(new CardLayout(0, 0));
+		contentPane.setLayout(mainCard);
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(new Color(255, 255, 51));
@@ -126,10 +140,15 @@ public class ChattingView extends JFrame {
 		
 			@Override
 			public void mouseClicked(MouseEvent e) {		//마우스 클릭 로그인
-				login();				
+
+				login();
+				mainCard.show(contentPane, "userListPanel");
+				clearFeild(usernameField);
+
 			}
 		});
 		
+	
 		loginButton.setIcon(new ImageIcon(ChattingView.class.getResource("/org/example/image/kakao_login_large_wide.png")));
 		loginButton.setForeground(new Color(0, 0, 0));
 		loginButton.setBackground(new Color(0, 51, 255));
@@ -143,26 +162,28 @@ public class ChattingView extends JFrame {
 		mainIcon.setIcon(new ImageIcon(ChattingView.class.getResource("/org/example/image/kakao-talk.png")));
 		mainIcon.setBounds(130, 144, 190, 179);
 	
-		
-		try {
-			BufferedImage originalImage = ImageIO.read(new File("/org/example/image/kakao-talk.png"));
-			Image scaledImage = originalImage.getScaledInstance(5, 5, Image.SCALE_SMOOTH);
-			ImageIcon icon = new ImageIcon(scaledImage);
-			JLabel label = new JLabel(icon);
-			getContentPane().add(label);
-		} catch (IOException e) {
-			System.out.println("이미지를 불러올 수 없습니다.");
-			e.printStackTrace();
-		}
+//		
+//		try {
+//			BufferedImage originalImage = ImageIO.read(new File("/org/example/image/kakao-talk.png"));
+//			Image scaledImage = originalImage.getScaledInstance(5, 5, Image.SCALE_SMOOTH);
+//			ImageIcon icon = new ImageIcon(scaledImage);
+//			JLabel label = new JLabel(icon);
+//			getContentPane().add(label);
+//		} catch (IOException e) {
+//			System.out.println("이미지를 불러올 수 없습니다.");
+//			e.printStackTrace();
+//		}
 		
 		setVisible(true);
 		mainPanel.add(mainIcon);
-		JPanel userListPanel = new JPanel();
+
+		userListPanel = new JPanel();
+
 		userListPanel.setBackground(new Color(255, 255, 51));
-		contentPane.add(userListPanel, "name_5238560318400");
+		contentPane.add(userListPanel, "userListPanel");
 		userListPanel.setLayout(null);
 		
-		JTextArea userArea = new JTextArea();
+		userArea = new JTextArea();
 		userArea.setBounds(89, 0, 367, 753);
 		userListPanel.add(userArea);
 		
@@ -266,25 +287,25 @@ public class ChattingView extends JFrame {
 			try {
 				socket = new Socket(ip, port);
 				ClientRecive clientRecive = new ClientRecive(socket);
+
+				clientRecive.start();
 				
-				while(true) {
-					clientRecive.start();
-					System.out.println("연결됨");
+				System.out.println("연결됨");
+				
+				try {
+					nickname = usernameField.getText();
+					LoginReqDto loginReqDto = new LoginReqDto(nickname);
+					String loginJson = gson.toJson(loginReqDto);
+					RequestDto requestDto = new RequestDto("login", loginJson);
+					String requestJson = gson.toJson(requestDto);
 					
-					try {
-						nickname = usernameField.getText();
-						LoginReqDto loginReqDto = new LoginReqDto(nickname);
-						String loginJson = gson.toJson(loginReqDto);
-						RequestDto requestDto = new RequestDto("login", loginJson);
-						String requestJson = gson.toJson(requestDto);
-						
-						OutputStream outputStream = socket.getOutputStream();
-						PrintWriter writer = new PrintWriter(outputStream, true);
-						writer.println(requestJson);
-						
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+					OutputStream outputStream = socket.getOutputStream();
+					PrintWriter writer = new PrintWriter(outputStream, true);
+					writer.println(requestJson);
+					
+				} catch (IOException e1) {
+					e1.printStackTrace();
+
 				}
 				
 			} catch (UnknownHostException e2) {
@@ -298,5 +319,12 @@ public class ChattingView extends JFrame {
 		}
 		
 	}
+
+
+	private void clearFeild (JTextField textField) {
+		textField.getText().isEmpty();
+		textField.setText("");
+	}
+
 	
 }
