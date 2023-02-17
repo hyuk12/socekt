@@ -37,11 +37,12 @@ import org.example.dto.RequestDto;
 import org.example.viewcontroller.ClientRecive;
 
 import com.google.gson.Gson;
-
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
+
+
+
 public class ChattingView extends JFrame {
 
 	private static ChattingView instance = null;
