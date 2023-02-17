@@ -39,26 +39,28 @@ public class ClientRecive extends Thread{
 				
 				switch(responseDto.getResource()) {
 					case "login" :
+						                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 						System.out.println("로그인됨");//최종때 지워도됨
 						
 						break;
 						
 					case "message" :
 						MessageRespDto messageRespDto = gson.fromJson(responseDto.getBody(), MessageRespDto.class);
-						ChattingView.getInstance().getContentView().append(messageRespDto.getToUser() + " :"); //채팅창
-						ChattingView.getInstance().getContentView().append(messageRespDto.getMessageValue() + "\n"); //채팅창
-
 						
+						//채팅창에 toUser + Message 띄워줌
+						ChattingView.getInstance().getContentView().append(messageRespDto.getToUser() + " :" + messageRespDto.getMessageValue() + "\n"); 
+						
+
 						break;
 						
 					case "createRoom":
 						CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class );
 						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
 						
-						break;
+						ChattingView.getInstance().getUserArea().append(createRoomRespDto.getCreateMessage());
 						
-					case "":
 						break;
+				
 				}
 				
 			}
