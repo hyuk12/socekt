@@ -1,20 +1,19 @@
 package org.example.view;
 
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.LayoutManager;
+import com.google.gson.Gson;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import org.example.dto.LoginReqDto;
+import org.example.entity.Room;
+import org.example.viewcontroller.ClientRecive;
+
+import java.awt.EventQueue;
+
+
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.BorderLayout;
+
 import java.awt.CardLayout;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -22,11 +21,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 
 public class ChattingClient extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -40,14 +44,27 @@ public class ChattingClient extends JFrame {
 		return instance;
 	}
 
+	private Socket socket;
+	private Gson gson;
+	private List<Room> rooms;
+	
 	private JPanel mainPanel;
-	 
+
+	private JLabel nicknameLabel;
 	private JPanel joinPanel ;
 	private JButton joinButton;
 	private JTextField joinNickname;
 	private ImageIcon kakaoImage;
-	private JTextField messageInput;
 
+	private String roomName;
+	private List<JPanel> chattingRoomPanels;
+	private JPanel chattingRoomPanel;
+	private JTextField messageInput;
+	private JList<String> roomList;
+	private JScrollPane scrollpane;
+	private DefaultListModel<String> model;
+
+	private JPanel chattingListPanel;
 	
 	/**
 	 * Launch the application.
@@ -56,7 +73,7 @@ public class ChattingClient extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ChattingClient frame = new ChattingClient();
+					ChattingClient frame = ChattingClient.getInstance();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -69,6 +86,7 @@ public class ChattingClient extends JFrame {
 	 * Create the frame.
 	 */
 	private ChattingClient() {
+		gson = new Gson();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 800);
 		mainPanel = new JPanel();
@@ -93,17 +111,96 @@ public class ChattingClient extends JFrame {
 		joinPanel.add(background);
 		
 
-
+		nicknameLabel = new JLabel();
+		joinNickname = new JTextField();
 		
+		joinNickname.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					String ip = "127.0.0.1";
+					int port = 8888;
+
+					try {
+						socket = new Socket(ip, port);
+						ClientRecive clientRecive = new ClientRecive(socket);
+						clientRecive.start();
+
+						LoginReqDto loginReqDto = new LoginReqDto("login", joinNickname.getText());
+						System.out.println(joinNickname.getText());
+						System.out.println(loginReqDto);
+
+						String joinJson = gson.toJson(loginReqDto);
+						OutputStream outputStream = socket.getOutputStream();
+						PrintWriter out = new PrintWriter(outputStream, true);
+
+						out.println(joinJson);
+
+						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+
+					} catch (ConnectException ex) {
+						JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		joinNickname.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (socket != null) {
+					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+					mainLayout.show(mainPanel, "chattingList");
+				}
+			}
+		});
+
 		joinButton = new JButton("");
 		joinButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				String ip = "127.0.0.1";
+				int port = 8888;
+
+				try {
+					socket = new Socket(ip, port);
+					ClientRecive clientRecive = new ClientRecive(socket);
+					clientRecive.start();
+
+					LoginReqDto loginReqDto = new LoginReqDto("login", joinNickname.getText());
+					System.out.println(joinNickname.getText());
+					System.out.println(loginReqDto);
+
+					String joinJson = gson.toJson(loginReqDto);
+					OutputStream outputStream = socket.getOutputStream();
+					PrintWriter out = new PrintWriter(outputStream, true);
+
+					out.println(joinJson);
+
+					JOptionPane.showMessageDialog(null, loginReqDto.getNickname()+ "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+
+				} catch (ConnectException ex) {
+					JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
-		
+
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (socket != null) {
+					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+					mainLayout.show(mainPanel, "chattingList");
+				}
 			}
 		});
 		joinButton.setBounds(62, 559, 328, 49);
@@ -114,25 +211,98 @@ public class ChattingClient extends JFrame {
 		joinButton.setBorderPainted(false);
 		joinButton.setFocusPainted(false);
 		joinButton.setContentAreaFilled(false);
-		
-		joinNickname = new JTextField();
-		joinNickname.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
+
 		joinNickname.setBounds(62, 473, 328, 49);
 		joinPanel.add(joinNickname);
 		joinNickname.setColumns(10);
-		
+
+		chattingListPanel = new JPanel();
+		mainPanel.add(chattingListPanel, "chattingList");
+		chattingListPanel.setLayout(null);
+		chattingListPanel.setBackground(new Color(255, 217, 0));
+
 		ImageIcon plusButton = new ImageIcon(ChattingClient.class.getResource("../image/플러스버튼이미지.png"));
+		JButton roomPlusButton = new JButton("");
 		
-		JPanel chattingRoomPanel = new JPanel();
-		mainPanel.add(chattingRoomPanel, "name_53896203369291");
+		rooms = new ArrayList<>();
+		roomPlusButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String roomId = UUID.randomUUID().toString();
+				
+				String title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
+				rooms.add(new Room(title, roomId));
+				updateRoomList();
+				
+
+			}
+		});
+		
+		chattingRoomPanels = new ArrayList<>();
+		chattingRoomPanel = new JPanel();
+		roomPlusButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				chattingRoomPanels.add(chattingListPanel);
+				
+				
+			}
+		});
+		
+		
+		
+		roomPlusButton.setBounds(0, 102, 101, 98);
+		chattingListPanel.add(roomPlusButton);
+		roomPlusButton.setIcon(plusButton);
+		roomPlusButton.setBorderPainted(false);
+		roomPlusButton.setFocusPainted(false);
+		roomPlusButton.setContentAreaFilled(false);
+
+		JLabel kakaoImg = new JLabel(kakaoImage);
+		kakaoImg.setBounds(0, 17, 101, 81);
+		chattingListPanel.add(kakaoImg);
+
+		
+		roomList = new JList<>();
+		
+		roomList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					int index = roomList.locationToIndex(e.getPoint());
+					roomName = roomList.getModel().getElementAt(index);
+					int result = JOptionPane.showConfirmDialog(null, 
+							"방에 입장 하시겠습니까?", 
+							"Enter Room", 
+							JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {						
+						CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+						mainLayout.show(mainPanel, "roomName");
+					} 
+					
+					
+				}
+			}
+		});
+		
+		scrollpane = new JScrollPane(roomList);
+
+		roomList.setBounds(0, 212, 324, -81);
+
+		scrollpane.setBounds(113, 0, 351, 762);
+		
+		chattingListPanel.add(scrollpane);
+
+
+
+		mainPanel.add(chattingRoomPanel,"roomName");
+		
 		chattingRoomPanel.setLayout(null);
 		chattingRoomPanel.setBackground(new Color(255, 217, 0));
-		
-		JLabel roomTitle = new JLabel("제목: 000의 방입니다.");
+		System.out.println(roomName);
+		JLabel roomTitle = new JLabel("제목:"+ roomName +"의 방입니다.");
 		roomTitle.setFont(new Font("Verdana", Font.PLAIN, 16));
 		roomTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		roomTitle.setBounds(6, 6, 372, 52);
@@ -172,31 +342,15 @@ public class ChattingClient extends JFrame {
 		JTextArea textArea = new JTextArea();
 		scrollPane_1.setColumnHeaderView(textArea);
 		
-		JPanel chattingListPanel = new JPanel();
-		mainPanel.add(chattingListPanel, "name_55790787035083");
-		chattingListPanel.setLayout(null);
-		chattingListPanel.setBackground(new Color(255, 217, 0));
+
 		
-		JButton roomPlusButton = new JButton("");
-		roomPlusButton.setBounds(0, 102, 101, 98);
-		chattingListPanel.add(roomPlusButton);
-		roomPlusButton.setIcon(plusButton);
-		roomPlusButton.setBorderPainted(false);
-		roomPlusButton.setFocusPainted(false);
-		roomPlusButton.setContentAreaFilled(false);
-		
-		JLabel kakaoImg = new JLabel(kakaoImage);
-		kakaoImg.setBounds(0, 17, 101, 81);
-		chattingListPanel.add(kakaoImg);
-		
-		
-		JList<String> roomList = new JList<String>();
-		roomList.setBounds(0, 212, 324, -81);
-		chattingListPanel.add(roomList);
-		
-		JScrollPane scrollpane = new JScrollPane(roomList);
-		scrollpane.setBounds(113, 0, 351, 762);
-		chattingListPanel.add(scrollpane);
-		
+	}
+	
+	private void updateRoomList() {
+		model = new DefaultListModel<>();
+		for (Room room : rooms) {
+			model.addElement(room.getName());
+		}
+		roomList.setModel(model);
 	}
 }

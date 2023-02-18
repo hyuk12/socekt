@@ -59,8 +59,8 @@ public class ServerThread extends Thread{
 				
 				switch (requestDto.getResource()) {
 				case "login":
-					LoginRespDto loginRespDto = serverUtil.loginUser(requestDto);
-					serverUtil.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
+//					LoginRespDto loginRespDto = serverUtil.loginUser(requestDto);
+//					serverUtil.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
 					break;
 
 				case "message":

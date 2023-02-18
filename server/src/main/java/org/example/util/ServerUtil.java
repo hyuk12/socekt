@@ -23,12 +23,12 @@ import lombok.Getter;
 public class ServerUtil {
 	private final Gson gson;
 
-	public LoginRespDto loginUser(RequestDto requestDto) {
-
-		LoginReqDto loginReqDto = gson.fromJson(requestDto.getBody(), LoginReqDto.class);
-
-		return new LoginRespDto(loginReqDto.getNickname() + "님이 접속하셨습니다.");
-	}
+//	public LoginRespDto loginUser(RequestDto requestDto) {
+//
+//		LoginReqDto loginReqDto = gson.fromJson(requestDto.getBody(), LoginReqDto.class);
+//
+//		return new LoginRespDto(loginReqDto.getNickname() + "님이 접속하셨습니다.");
+//	}
 	
 	public void sendToAll(String resource, String status, String body) throws IOException {
 		
