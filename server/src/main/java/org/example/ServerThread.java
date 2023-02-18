@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.example.dto.request.CreateRoomReqDto;
+import org.example.dto.request.LoginReqDto;
 import org.example.dto.request.MessageReqDto;
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.CreateRoomRespDto;
@@ -55,10 +56,15 @@ public class ServerThread extends Thread{
 			while(true) {
 				
 				String request = reader.readLine();
+				System.out.println(request);
+
 				RequestDto requestDto = gson.fromJson(request, RequestDto.class);
-				
+				System.out.println(requestDto.getResource());
 				switch (requestDto.getResource()) {
 				case "login":
+					LoginReqDto loginReqDto = gson.fromJson(requestDto.getBody(), LoginReqDto.class);
+					LoginRespDto loginRespDto = new LoginRespDto(loginReqDto.getNickname() + "어서오세요!");
+					System.out.println(loginRespDto.getWelcomeMessage());
 //					LoginRespDto loginRespDto = serverUtil.loginUser(requestDto);
 //					serverUtil.sendToAll(requestDto.getResource(), "ok", gson.toJson(loginRespDto));
 					break;

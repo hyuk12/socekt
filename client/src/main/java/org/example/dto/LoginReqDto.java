@@ -6,7 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class LoginReqDto {
-	private String resource;
 	private String nickname;
 	
 }
