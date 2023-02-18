@@ -28,7 +28,7 @@ public class Server {
 			
 			while(true) {
 				socket = serverSocket.accept();
-				
+				System.out.println(socket);
 				boolean connected = socket.isConnected() && !socket.isClosed();
 				if(connected) {
 					serverThread = new ServerThread(socket);

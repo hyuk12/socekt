@@ -3,6 +3,7 @@ package org.example.view;
 import com.google.gson.Gson;
 
 import org.example.dto.LoginReqDto;
+import org.example.dto.RequestDto;
 import org.example.entity.Room;
 import org.example.viewcontroller.ClientRecive;
 
@@ -50,7 +51,6 @@ public class ChattingClient extends JFrame {
 	
 	private JPanel mainPanel;
 
-	private JLabel nicknameLabel;
 	private JPanel joinPanel ;
 	private JButton joinButton;
 	private JTextField joinNickname;
@@ -111,7 +111,7 @@ public class ChattingClient extends JFrame {
 		joinPanel.add(background);
 		
 
-		nicknameLabel = new JLabel();
+		
 		joinNickname = new JTextField();
 		
 		joinNickname.addKeyListener(new KeyAdapter() {
@@ -131,15 +131,18 @@ public class ChattingClient extends JFrame {
 						ClientRecive clientRecive = new ClientRecive(socket);
 						clientRecive.start();
 
-						LoginReqDto loginReqDto = new LoginReqDto("login", joinNickname.getText());
+						LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
 						System.out.println(joinNickname.getText());
 						System.out.println(loginReqDto);
 
 						String joinJson = gson.toJson(loginReqDto);
+						RequestDto requestDto = new RequestDto("login", joinJson);
+						String requestJson = gson.toJson(requestDto);
+						System.out.println(joinJson);
 						OutputStream outputStream = socket.getOutputStream();
 						PrintWriter out = new PrintWriter(outputStream, true);
 
-						out.println(joinJson);
+						out.println(requestJson);
 
 						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
@@ -175,17 +178,22 @@ public class ChattingClient extends JFrame {
 					ClientRecive clientRecive = new ClientRecive(socket);
 					clientRecive.start();
 
-					LoginReqDto loginReqDto = new LoginReqDto("login", joinNickname.getText());
+					
+
+					LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
 					System.out.println(joinNickname.getText());
 					System.out.println(loginReqDto);
 
 					String joinJson = gson.toJson(loginReqDto);
+					RequestDto requestDto = new RequestDto("login", joinJson);
+					String requestJson = gson.toJson(requestDto);
+					System.out.println(joinJson);
 					OutputStream outputStream = socket.getOutputStream();
 					PrintWriter out = new PrintWriter(outputStream, true);
 
-					out.println(joinJson);
+					out.println(requestJson);
 
-					JOptionPane.showMessageDialog(null, loginReqDto.getNickname()+ "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, requestDto.getBody()+ "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (ConnectException ex) {
 					JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
@@ -250,8 +258,6 @@ public class ChattingClient extends JFrame {
 				
 			}
 		});
-		
-		
 		
 		roomPlusButton.setBounds(0, 102, 101, 98);
 		chattingListPanel.add(roomPlusButton);
