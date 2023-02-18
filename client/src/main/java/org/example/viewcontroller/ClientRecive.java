@@ -12,7 +12,7 @@ import org.example.dto.LoginRespDto;
 import org.example.dto.MessageRespDto;
 import org.example.dto.ResponseDto;
 import org.example.view.ChattingClient;
-import org.example.view.ChattingView;
+
 
 import com.google.gson.Gson;
 
@@ -41,7 +41,7 @@ public class ClientRecive extends Thread{
 				switch(responseDto.getResource()) {
 					case "login" :
 						                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-						System.out.println("로그인됨");//최종때 지워도됨
+						//최종때 지워도됨
 						
 						break;
 						
@@ -49,14 +49,14 @@ public class ClientRecive extends Thread{
 						MessageRespDto messageRespDto = gson.fromJson(responseDto.getBody(), MessageRespDto.class);
 						
 						//채팅창에 toUser + Message 띄워줌
-					ChattingClient.getInstance().getContentView().append(messageRespDto.getToUser() + " :" + messageRespDto.getMessageValue() + "\n"); 
+//					ChattingClient.getInstance().getContentView().append(messageRespDto.getToUser() + " :" + messageRespDto.getMessageValue() + "\n");
 						
 
 						break;
 						
 					case "createRoom":
 //						CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class );
-						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
+//						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
 						
 //						ChattingView.getInstance().getUserArea().append(createRoomRespDto.getCreateMessage());
 						

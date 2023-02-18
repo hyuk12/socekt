@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa7a9888-a67d-4c3b-bec1-d0293ec0741f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/LoginReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/LoginReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/util/ServerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/util/ServerUtil.java" afterDir="false" />
     </list>
@@ -57,26 +58,41 @@
     </option>
   </component>
   <component name="ProjectId" id="2Li8Bg6fBYNM1phhSUc18OAcnep" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "/Users/choehaehyeog/Desktop/backend-study/haehyuk/workspace/socket/client/pom.xml",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "show.migrate.to.gradle.popup": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/choehaehyeog/Desktop/backend-study/haehyuk/workspace/socket/client/pom.xml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RunManager" selected="Application.ChattingClient">
+    <configuration name="ChattingClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.view.ChattingClient" />
+      <module name="socket" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.view.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ChattingView" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.view.ChattingView" />
       <module name="socket" />
@@ -92,6 +108,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ChattingClient" />
         <item itemvalue="Application.ChattingView" />
       </list>
     </recent_temporary>
@@ -111,10 +128,17 @@
       <workItem from="1676376684525" duration="348000" />
       <workItem from="1676506885333" duration="808000" />
       <workItem from="1676600942653" duration="1096000" />
+      <workItem from="1676681095158" duration="77000" />
+      <workItem from="1676681203870" duration="4897000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/../.." />
+    </ignored-roots>
   </component>
 </project>
