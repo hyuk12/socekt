@@ -47,7 +47,7 @@ public class ChattingClient extends JFrame {
 
 	private Socket socket;
 	private Gson gson;
-	private List<Room> rooms;
+
 	
 	private JPanel mainPanel;
 
@@ -124,7 +124,7 @@ public class ChattingClient extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					String ip = "127.0.0.1";
-					int port = 8888;
+					int port = 8889;
 
 					try {
 						socket = new Socket(ip, port);
@@ -171,7 +171,7 @@ public class ChattingClient extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String ip = "127.0.0.1";
-				int port = 8888;
+				int port = 8889;
 
 				try {
 					socket = new Socket(ip, port);
@@ -232,17 +232,29 @@ public class ChattingClient extends JFrame {
 		ImageIcon plusButton = new ImageIcon(ChattingClient.class.getResource("../image/플러스버튼이미지.png"));
 		JButton roomPlusButton = new JButton("");
 		
-		rooms = new ArrayList<>();
+
 		roomPlusButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String roomId = UUID.randomUUID().toString();
-				
-				String title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
-				rooms.add(new Room(title, roomId));
-				updateRoomList();
-				
 
+
+				String title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
+
+				Room room = new Room(title);
+				String roomJson = gson.toJson(room);
+
+				RequestDto requestDto = new RequestDto("createRoom", roomJson);
+				String requestJson = gson.toJson(requestDto);
+				OutputStream outputStream = null;
+				try {
+					outputStream = socket.getOutputStream();
+					PrintWriter out = new PrintWriter(outputStream, true);
+					out.println(requestJson);
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+				System.out.println();
+				updateRoomList();
 			}
 		});
 		
@@ -287,8 +299,6 @@ public class ChattingClient extends JFrame {
 						CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
 						mainLayout.show(mainPanel, "roomName");
 					} 
-					
-					
 				}
 			}
 		});
@@ -354,9 +364,7 @@ public class ChattingClient extends JFrame {
 	
 	private void updateRoomList() {
 		model = new DefaultListModel<>();
-		for (Room room : rooms) {
-			model.addElement(room.getName());
-		}
+
 		roomList.setModel(model);
 	}
 }

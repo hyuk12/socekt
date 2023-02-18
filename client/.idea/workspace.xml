@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa7a9888-a67d-4c3b-bec1-d0293ec0741f" name="Changes" comment="" />
+    <list default="true" id="aa7a9888-a67d-4c3b-bec1-d0293ec0741f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -121,6 +128,7 @@
       <workItem from="1676600942653" duration="1096000" />
       <workItem from="1676681095158" duration="77000" />
       <workItem from="1676681203870" duration="5789000" />
+      <workItem from="1676721059015" duration="2074000" />
     </task>
     <servers />
   </component>

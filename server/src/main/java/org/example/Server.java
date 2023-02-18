@@ -23,7 +23,7 @@ public class Server {
 	
 	public void start() {
 		try {
-			serverSocket = new ServerSocket(8888);
+			serverSocket = new ServerSocket(8889);
 			System.out.println(" 서버 시작 ");
 			
 			while(true) {
