@@ -56,7 +56,7 @@ public class ServerThread extends Thread{
 			while(true) {
 				
 				String request = reader.readLine();
-				System.out.println(request);
+
 
 				RequestDto requestDto = gson.fromJson(request, RequestDto.class);
 				System.out.println(requestDto.getResource());
@@ -84,10 +84,13 @@ public class ServerThread extends Thread{
 					break;
 
 					case "createRoom":
-						CreateRoomReqDto createRoomReqDto = gson.fromJson(request, CreateRoomReqDto.class);
+
+						CreateRoomReqDto createRoomReqDto = gson.fromJson(requestDto.getBody(), CreateRoomReqDto.class);
+						System.out.println(createRoomReqDto.getTitle());
 
 						String createRoomName = createRoomReqDto.getTitle();
 						String createMessage = createRoomName + "방이 개설되었습니다.";
+
 						CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(createRoomName, createMessage);
 
 						serverUtil.createRoom(requestDto.getResource(), "ok", gson.toJson(createRoomRespDto));
