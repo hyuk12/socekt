@@ -6,16 +6,34 @@
   <component name="ChangeListManager">
     <list default="true" id="aa7a9888-a67d-4c3b-bec1-d0293ec0741f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/CreateRoomRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/LoginRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/LoginRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/MessageRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/MessageRespDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/CreateRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/CreateRoomReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/JoinRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/JoinRoomReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/LoginReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/LoginReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/MessageReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/request/MessageReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/CreateRoomRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/LoginRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/LoginRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/util/ServerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/util/ServerUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -56,7 +74,9 @@
     </option>
   </component>
   <component name="ProjectId" id="2Li8Bg6fBYNM1phhSUc18OAcnep" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
@@ -78,7 +98,7 @@
   }
 }</component>
   <component name="RunManager" selected="Application.ChattingClient">
-    <configuration name="ChattingClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="ChattingClient" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.view.ChattingClient" />
       <module name="socket" />
       <extension name="coverage">
@@ -104,6 +124,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.ChattingClient" />
+      <item itemvalue="Application.ChattingView" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ChattingClient" />
@@ -129,6 +153,10 @@
       <workItem from="1676681095158" duration="77000" />
       <workItem from="1676681203870" duration="5789000" />
       <workItem from="1676721059015" duration="2074000" />
+      <workItem from="1676790643994" duration="5485000" />
+      <workItem from="1676804491507" duration="450000" />
+      <workItem from="1676850947886" duration="27612000" />
+      <workItem from="1676883962826" duration="3795000" />
     </task>
     <servers />
   </component>

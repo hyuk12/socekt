@@ -10,6 +10,6 @@ import lombok.Data;
 public class LoginRespDto {
 
 	private String welcomeMessage;
-	private List<String> connectedUsers;
+	private List<String> roomList;
 	
 }

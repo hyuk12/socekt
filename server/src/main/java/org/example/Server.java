@@ -33,6 +33,7 @@ public class Server {
 				if(connected) {
 					serverThread = new ServerThread(socket);
 					serverThread.start();
+
 //					
 				}
 				

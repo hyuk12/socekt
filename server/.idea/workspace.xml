@@ -6,11 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="0fd6477b-f5ec-401f-9656-ebf9b0322ebd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../client/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/CreateRoomRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/LoginRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/LoginRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/MessageRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/MessageRespDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/entity/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/view/ChattingClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/view/ChattingClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/viewcontroller/ClientRecive.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/viewcontroller/ClientRecive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ServerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/CreateRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/CreateRoomReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/JoinRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/JoinRoomReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/LoginReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/LoginReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/MessageReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/MessageReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/LoginRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/response/LoginRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/ServerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/util/ServerUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,6 +140,12 @@
       <workItem from="1676592248250" duration="7311000" />
       <workItem from="1676682403504" duration="5557000" />
       <workItem from="1676721463374" duration="1668000" />
+      <workItem from="1676724044332" duration="348000" />
+      <workItem from="1676792256764" duration="3185000" />
+      <workItem from="1676850971385" duration="22533000" />
+      <workItem from="1676882704231" duration="179000" />
+      <workItem from="1676883945958" duration="89000" />
+      <workItem from="1676884053905" duration="3389000" />
     </task>
     <servers />
   </component>
