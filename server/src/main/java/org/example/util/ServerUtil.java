@@ -37,18 +37,18 @@ public class ServerUtil {
 		outputSocket(responseDto);
 	}
 	
-	public void sendToUser(String resource, String status, String body, String toUser) throws IOException {
-		ResponseDto responseDto = new ResponseDto(resource, status, body);
-
-		for(ServerThread thread : ServerThread.getSocketList()) {
-			if(thread.getNickname().equals(toUser)) {
-				OutputStream outputStream = thread.getSocket().getOutputStream();
-				PrintWriter writer = new PrintWriter(outputStream, true);
-
-				writer.println(gson.toJson(responseDto));
-			}
-		}
-	}
+//	public void sendToUser(String resource, String status, String body, String toUser) throws IOException {
+//		ResponseDto responseDto = new ResponseDto(resource, status, body);
+//
+//		for(ServerThread thread : ServerThread.getSocketList()) {
+//			if(thread.getNickname().equals(toUser)) {
+//				OutputStream outputStream = thread.getSocket().getOutputStream();
+//				PrintWriter writer = new PrintWriter(outputStream, true);
+//
+//				writer.println(gson.toJson(responseDto));
+//			}
+//		}
+//	}
 
 	public void createRoom(String resource,  String status, String body) throws IOException {
 		ResponseDto responseDto = new ResponseDto(resource, status, body);

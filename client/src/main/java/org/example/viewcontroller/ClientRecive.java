@@ -5,12 +5,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
-import org.example.dto.LoginRespDto;
-import org.example.dto.MessageRespDto;
-import org.example.dto.ResponseDto;
+import com.google.gson.JsonIOException;
+import com.google.gson.reflect.TypeToken;
+import org.example.dto.*;
+import org.example.entity.Room;
 import org.example.view.ChattingClient;
 
 
@@ -25,8 +31,8 @@ public class ClientRecive extends Thread{
 	private final Socket socket;
 	private InputStream inputStream;
 	private Gson gson;
-	
-	
+
+	private List<String> roomList = new ArrayList<String>();
 	@Override
 	public void run() {
 		try {
@@ -40,26 +46,48 @@ public class ClientRecive extends Thread{
 				
 				switch(responseDto.getResource()) {
 					case "login" :
-						                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-						//최종때 지워도됨
-						
+
+						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
+
+						if (loginRespDto.getRoomList() != null) {
+
+							ChattingClient.getInstance().getModel().clear();
+							ChattingClient.getInstance().getModel().addAll(loginRespDto.getRoomList());
+						}
+
 						break;
 						
 					case "message" :
 						MessageRespDto messageRespDto = gson.fromJson(responseDto.getBody(), MessageRespDto.class);
-						
-						//채팅창에 toUser + Message 띄워줌
-//					ChattingClient.getInstance().getContentView().append(messageRespDto.getToUser() + " :" + messageRespDto.getMessageValue() + "\n");
-						
+						String message = messageRespDto.getMessage();
+						ChattingClient.getInstance().getContentView().append(message + "\n");
 
 						break;
 						
 					case "createRoom":
-//						CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class );
-//						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
-						
-//						ChattingView.getInstance().getUserArea().append(createRoomRespDto.getCreateMessage());
-						
+
+						try {
+
+							CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class);
+
+							roomList.addAll(createRoomRespDto.getRoomList());
+							ChattingClient.getInstance().getContentView().setText("");
+
+							ChattingClient.getInstance().getModel().clear();
+							ChattingClient.getInstance().getModel().addAll(roomList);
+
+
+						} catch (JsonIOException e) {
+							e.printStackTrace();
+
+						}
+//						for (String title : rooms.getTitle()) {
+//							ChattingClient.getInstance().
+//						}
+
+						break;
+					case "joinRoom":
+
 						break;
 				
 				}
@@ -72,5 +100,7 @@ public class ClientRecive extends Thread{
 				e.printStackTrace();
 			}	
 	}
+
+
 	
 }

@@ -2,8 +2,9 @@ package org.example.view;
 
 import com.google.gson.Gson;
 
-import org.example.dto.LoginReqDto;
-import org.example.dto.RequestDto;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.dto.*;
 import org.example.entity.Room;
 import org.example.viewcontroller.ClientRecive;
 
@@ -28,11 +29,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 
+@Getter
 public class ChattingClient extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -47,9 +46,11 @@ public class ChattingClient extends JFrame {
 
 	private Socket socket;
 	private Gson gson;
-
+	private Room room;
+	private int index;
 	
 	private JPanel mainPanel;
+	private JList<String> userList;
 
 	private JPanel joinPanel ;
 	private JButton joinButton;
@@ -57,15 +58,20 @@ public class ChattingClient extends JFrame {
 	private ImageIcon kakaoImage;
 
 	private String roomName;
-	private List<JPanel> chattingRoomPanels;
+	private String nickname;
 	private JPanel chattingRoomPanel;
 	private JTextField messageInput;
 	private JList<String> roomList;
 	private JScrollPane scrollpane;
-	private DefaultListModel<String> model;
+	@Getter @Setter
+	private DefaultListModel<String> model =  new DefaultListModel<>();
+
+	private DefaultListModel<String> userListModel;
 
 	private JPanel chattingListPanel;
-	
+	private JLabel roomTitle;
+	private JTextArea contentView;
+
 	/**
 	 * Launch the application.
 	 */
@@ -87,6 +93,8 @@ public class ChattingClient extends JFrame {
 	 */
 	private ChattingClient() {
 		gson = new Gson();
+		userListModel = new DefaultListModel<>();
+		userList = new JList<String>(userListModel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 800);
 		mainPanel = new JPanel();
@@ -96,8 +104,6 @@ public class ChattingClient extends JFrame {
 		mainPanel.setLayout(new CardLayout(0, 0));
 		
 
-
-		
 		joinPanel = new JPanel();
 		joinPanel.setBackground(new Color(255, 217, 0));
 		mainPanel.add(joinPanel, "name_49023625943041");
@@ -132,8 +138,9 @@ public class ChattingClient extends JFrame {
 						clientRecive.start();
 
 						LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
-						System.out.println(joinNickname.getText());
-						System.out.println(loginReqDto);
+						nickname = joinNickname.getText();
+						userListModel.addElement(nickname);
+
 
 						String joinJson = gson.toJson(loginReqDto);
 						RequestDto requestDto = new RequestDto("login", joinJson);
@@ -178,11 +185,8 @@ public class ChattingClient extends JFrame {
 					ClientRecive clientRecive = new ClientRecive(socket);
 					clientRecive.start();
 
-					
-
 					LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
-					System.out.println(joinNickname.getText());
-					System.out.println(loginReqDto);
+					nickname = joinNickname.getText();
 
 					String joinJson = gson.toJson(loginReqDto);
 					RequestDto requestDto = new RequestDto("login", joinJson);
@@ -193,7 +197,7 @@ public class ChattingClient extends JFrame {
 
 					out.println(requestJson);
 
-					JOptionPane.showMessageDialog(null, requestDto.getBody()+ "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (ConnectException ex) {
 					JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
@@ -231,46 +235,49 @@ public class ChattingClient extends JFrame {
 
 		ImageIcon plusButton = new ImageIcon(ChattingClient.class.getResource("../image/플러스버튼이미지.png"));
 		JButton roomPlusButton = new JButton("");
-		
 
+		roomList = new JList<>(model);
+		scrollpane = new JScrollPane(roomList);
+
+		scrollpane.setViewportView(roomList);
+		chattingListPanel.add(scrollpane);
 		roomPlusButton.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-
 				String title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
 
-				Room room = new Room(title);
-				String roomJson = gson.toJson(room);
+				String kingName = nickname;
+				int portNumber = socket.getPort();
 
-				RequestDto requestDto = new RequestDto("createRoom", roomJson);
+				CreateRoomReqDto createRoomReqDto = new CreateRoomReqDto(title, kingName);
+				String createRoomJson = gson.toJson(createRoomReqDto);
+				RequestDto requestDto = new RequestDto("createRoom", createRoomJson);
 				String requestJson = gson.toJson(requestDto);
-				OutputStream outputStream = null;
+
+
+
 				try {
-					outputStream = socket.getOutputStream();
+					OutputStream outputStream = socket.getOutputStream();
 					PrintWriter out = new PrintWriter(outputStream, true);
 					out.println(requestJson);
 				} catch (IOException ex) {
-					throw new RuntimeException(ex);
+					ex.printStackTrace();
 				}
-				System.out.println();
-				updateRoomList();
+				if (title != null) {
+
+					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+					mainLayout.show(mainPanel, "chattingRoom");
+					roomTitle.setText("제목: "+ title + "의 방입니다.");
+					contentView.setText("");
+					contentView.append(title + "방이 생성되었습니다.");
+				}
 			}
 		});
-		
-		chattingRoomPanels = new ArrayList<>();
-		chattingRoomPanel = new JPanel();
-		roomPlusButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				chattingRoomPanels.add(chattingListPanel);
-				
-				
-			}
-		});
-		
+
+
+
 		roomPlusButton.setBounds(0, 102, 101, 98);
 		chattingListPanel.add(roomPlusButton);
 		roomPlusButton.setIcon(plusButton);
@@ -282,71 +289,94 @@ public class ChattingClient extends JFrame {
 		kakaoImg.setBounds(0, 17, 101, 81);
 		chattingListPanel.add(kakaoImg);
 
-		
-		roomList = new JList<>();
-		
+
+
+
 		roomList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 2) {
-					int index = roomList.locationToIndex(e.getPoint());
+					String room = roomList.getSelectedValue().toString();
+					System.out.println(room);
+					index = roomList.locationToIndex(e.getPoint());
 					roomName = roomList.getModel().getElementAt(index);
+					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName);
+					String joinRoomJson = gson.toJson(joinRoomReqDto);
+					RequestDto requestDto = new RequestDto("joinRoom", joinRoomJson);
+					String requestJson = gson.toJson(requestDto);
+					try {
+						OutputStream outputStream = socket.getOutputStream();
+						PrintWriter out = new PrintWriter(outputStream, true);
+
+						out.println(requestJson);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
 					int result = JOptionPane.showConfirmDialog(null, 
 							"방에 입장 하시겠습니까?", 
 							"Enter Room", 
 							JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.YES_OPTION) {						
 						CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
-						mainLayout.show(mainPanel, "roomName");
+						mainLayout.show(mainPanel, "chattingRoom");
+
 					} 
 				}
 			}
 		});
 		
-		scrollpane = new JScrollPane(roomList);
-
 		roomList.setBounds(0, 212, 324, -81);
 
 		scrollpane.setBounds(113, 0, 351, 762);
+
+
+		chattingRoomPanel = new JPanel();
 		
-		chattingListPanel.add(scrollpane);
+		mainPanel.add(chattingRoomPanel, "chattingRoom");
 
-
-
-		mainPanel.add(chattingRoomPanel,"roomName");
-		
 		chattingRoomPanel.setLayout(null);
 		chattingRoomPanel.setBackground(new Color(255, 217, 0));
-		System.out.println(roomName);
-		JLabel roomTitle = new JLabel("제목:"+ roomName +"의 방입니다.");
+//		System.out.println(model.getElementAt(index));
+		roomTitle = new JLabel();
 		roomTitle.setFont(new Font("Verdana", Font.PLAIN, 16));
 		roomTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		roomTitle.setBounds(6, 6, 372, 52);
 		chattingRoomPanel.add(roomTitle);
-		
+
 		JButton exitRoomButton = new JButton("");
 		exitRoomButton.setBounds(373, 6, 90, 52);
 		chattingRoomPanel.add(exitRoomButton);
-		
+
 		ImageIcon exitButton = new ImageIcon(ChattingClient.class.getResource("../image/나가기.png"));
 		exitRoomButton.setIcon(exitButton);
 		exitRoomButton.setBorderPainted(false);
 		exitRoomButton.setFocusPainted(false);
 		exitRoomButton.setContentAreaFilled(false);
-		
-		
+
+
 		JButton messageSendButton = new JButton("");
 		messageSendButton.setBounds(398, 707, 66, 42);
 		chattingRoomPanel.add(messageSendButton);
-		
+
 		ImageIcon sendButton = new ImageIcon(ChattingClient.class.getResource("../image/send-3.png"));
 		messageSendButton.setIcon(sendButton);
 		messageSendButton.setBorderPainted(false);
 		messageSendButton.setFocusPainted(false);
 		messageSendButton.setContentAreaFilled(false);
-		
-		
+
+
 		messageInput = new JTextField();
+		messageInput.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+					sendMessage();
+					messageInput.setText("");
+
+				}
+			}
+		});
 		messageInput.setBounds(6, 699, 399, 57);
 		chattingRoomPanel.add(messageInput);
 		messageInput.setColumns(10);
@@ -355,16 +385,37 @@ public class ChattingClient extends JFrame {
 		scrollPane_1.setBounds(6, 70, 457, 624);
 		chattingRoomPanel.add(scrollPane_1);
 		
-		JTextArea textArea = new JTextArea();
-		scrollPane_1.setColumnHeaderView(textArea);
-		
+		contentView = new JTextArea();
 
-		
+		scrollPane_1.setColumnHeaderView(contentView);
+
 	}
-	
-	private void updateRoomList() {
-		model = new DefaultListModel<>();
 
-		roomList.setModel(model);
+	private void sendMessage() {
+		if(!messageInput.getText().isBlank()) {
+
+			/*from : room 객체에있는 유저들*/
+			MessageReqDto messageReqDto = new MessageReqDto(joinNickname.getText(), messageInput.getText());
+
+			sendRequest("message", gson.toJson(messageReqDto));
+
+
+		}
+	}
+
+	private void sendRequest(String resource, String body){
+		OutputStream outputStream;
+		try {
+			outputStream = socket.getOutputStream();
+			PrintWriter out = new PrintWriter(outputStream, true);
+
+			RequestDto requestDto = new RequestDto(resource, body);
+
+
+			out.println(gson.toJson(requestDto));
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
 	}
 }

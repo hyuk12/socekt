@@ -2,10 +2,13 @@ package org.example.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import org.example.entity.Room;
+
+import java.util.List;
 
 @AllArgsConstructor
-@Data
+@Getter
 public class CreateRoomRespDto {
-	private String title;
-	private String createMessage;
+	private List<String> roomList;
 }
