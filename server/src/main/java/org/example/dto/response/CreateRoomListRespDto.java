@@ -5,8 +5,10 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter
 @AllArgsConstructor
-public class CreateRoomRespDto {
-    private String roomName;
+@Getter
+public class CreateRoomListRespDto {
+
+    private List<String> roomNameList;
+
 }

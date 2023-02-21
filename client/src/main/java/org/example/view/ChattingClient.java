@@ -247,6 +247,7 @@ public class ChattingClient extends JFrame {
 					String createRoomJson = gson.toJson(createRoomReqDto);
 					
 					sendRequest("createRoom", createRoomJson);
+					sendRequest("createRoomList", createRoomJson);
 
 					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
 					mainLayout.show(mainPanel, "chattingRoom");
