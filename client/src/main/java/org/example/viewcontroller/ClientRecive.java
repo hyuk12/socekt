@@ -54,18 +54,12 @@ public class ClientRecive extends Thread{
 					case "join" :
 
 						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
-						if(loginRespDto.getRoomList() == null) {
-							ChattingClient.getInstance().getChattingListPanel();
-						}
-//						 (loginRespDto.getRoomList() != null)
-						else {
-							
-							
-								ChattingClient.getInstance().getModel().clear();
-								ChattingClient.getInstance().getModel().addAll(roomList);
-							
+						if(loginRespDto.getRoomList() != null) {
+
+							ChattingClient.getInstance().getModel().clear();
+							ChattingClient.getInstance().getModel().addAll(loginRespDto.getRoomList());
+
 //								ChattingClient.getInstance().getChattingListPanel(); //없애
-							
 						}
 						
 						break;
@@ -81,25 +75,35 @@ public class ClientRecive extends Thread{
 						
 					case "createRoom":
 						try {
-							System.out.println(responseDto.getBody());
+
 							CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class);
 
-//							roomList.add(ChattingClient.getInstance().getTitle());
-							roomList.add(createRoomRespDto.getRoomName());
-							System.out.println("방잇냐?" + roomList.get(0));
-							for (String s : roomList) {
-								System.out.println("방잇냐?" + s);
-							}
 
-//							ChattingClient.getInstance().getContentView().setText("");
 
-//							ChattingClient.getInstance().getModel().clear();
-							
-							ChattingClient.getInstance().getModel().addAll(roomList);
-							ChattingClient.getInstance().getRoomTitle().setText("제목: "+ createRoomRespDto.getRoomName() + "의 방입니다.");
-//							ChattingClient.getInstance().getContentView().setText("");
-							ChattingClient.getInstance().getContentView().append(createRoomRespDto.getRoomName() + "방이 생성되었습니다."+"\n");
-							System.out.println(ChattingClient.getInstance().getModel());
+								ChattingClient.getInstance().getContentView().setText("");
+								ChattingClient.getInstance().getRoomTitle().setText("제목: "+ createRoomRespDto.getRoomName()+ "의 방입니다.");
+								ChattingClient.getInstance().getContentView().append(createRoomRespDto.getRoomName() + "방이 생성되었습니다."+"\n");
+
+
+
+						} catch (JsonIOException e) {
+							e.printStackTrace();
+
+						}
+
+						break;
+					case "createRoomList":
+						try {
+
+							CreateRoomListRespDto createRoomListRespDto = gson.fromJson(responseDto.getBody(), CreateRoomListRespDto.class);
+
+							ChattingClient.getInstance().getModel().clear();
+							ChattingClient.getInstance().getModel().addAll(createRoomListRespDto.getRoomNameList());
+
+
+
+
+
 						} catch (JsonIOException e) {
 							e.printStackTrace();
 
