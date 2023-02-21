@@ -7,7 +7,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class LoginRespDto {
-	private String welcomeMessage;
-	private List<String> roomList;
+public class JoinRespDto {
+    private String username;
+    private List<String> roomList;
 }

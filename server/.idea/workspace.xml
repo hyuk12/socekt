@@ -6,21 +6,32 @@
   <component name="ChangeListManager">
     <list default="true" id="0fd6477b-f5ec-401f-9656-ebf9b0322ebd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../client/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/CreateRoomRespDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/LoginRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/LoginRespDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/MessageRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/MessageRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/adapter/CreateRoomRespDtoTypeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/adapter/CreateRoomRespDtoTypeAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/CreateRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/request/CreateRoomReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/response/CreateRoomRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/JoinRoomReqDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/LoginReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/request/LoginReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/LoginRespDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/MessageReqDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/MessageRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/response/MessageRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/RequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/request/RequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/ResponseDto.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/entity/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/view/ChattingClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/view/ChattingClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/viewcontroller/ClientRecive.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/viewcontroller/ClientRecive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ServerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/CreateRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/CreateRoomReqDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/JoinRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/JoinRoomReqDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/LoginReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/LoginReqDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/MessageReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/request/MessageReqDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomRespDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/LoginRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/response/LoginRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/CreateRoomReqDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/JoinRoomReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/request/JoinRoomReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/LoginReqDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/MessageReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/request/MessageReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/request/RequestDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomRespDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/JoinRoomRespDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/LoginRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/response/LoginRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/MessageRespDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/ResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/dto/response/ResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/ServerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/util/ServerUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -146,6 +157,9 @@
       <workItem from="1676882704231" duration="179000" />
       <workItem from="1676883945958" duration="89000" />
       <workItem from="1676884053905" duration="3389000" />
+      <workItem from="1676893653325" duration="3309000" />
+      <workItem from="1676937152277" duration="11707000" />
+      <workItem from="1676959366331" duration="9829000" />
     </task>
     <servers />
   </component>

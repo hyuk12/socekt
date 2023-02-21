@@ -1,25 +1,22 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.example.dto.request.*;
-import org.example.dto.response.CreateRoomRespDto;
-import org.example.dto.response.JoinRoomRespDto;
-import org.example.dto.response.LoginRespDto;
-
-import org.example.dto.response.MessageRespDto;
 
 
 import com.google.gson.Gson;
 
 import lombok.Getter;
+import org.example.dto.request.CreateRoomReqDto;
+import org.example.dto.request.JoinReqDto;
+import org.example.dto.request.JoinRoomReqDto;
+import org.example.dto.request.RequestDto;
+import org.example.dto.response.CreateRoomRespDto;
+import org.example.dto.response.JoinRespDto;
+import org.example.dto.response.JoinRoomRespDto;
+import org.example.dto.response.ResponseDto;
 import org.example.entity.Room;
 import org.example.util.ServerUtil;
 
@@ -28,17 +25,20 @@ public class ServerThread extends Thread{
 	@Getter
 	private static List<ServerThread> socketList = new ArrayList<ServerThread>();
 	@Getter
-	private Socket socket;
+	private final Socket socket;
 	private InputStream inputStream;
 	private Gson gson;
 
+	private String username;
 
 	private ServerUtil serverUtil;
 
+
 	private static List<Room> rooms = new ArrayList<>();
+	private List<String> roomList = new ArrayList<String>();
+	private List<ServerThread> users = new ArrayList<>();
 	private Room room;
-	private String nickname;
-	private List<String> roomList;
+
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -48,6 +48,8 @@ public class ServerThread extends Thread{
 		this.serverUtil = new ServerUtil(gson);
 
 	}
+
+
 
 	@Override
 	public void run() {
@@ -59,67 +61,71 @@ public class ServerThread extends Thread{
 				
 				String request = reader.readLine();
 
-				RequestDto requestDto = gson.fromJson(request, RequestDto.class);
+				RequestDto<String> requestDto = gson.fromJson(request, RequestDto.class);
 
 				switch (requestDto.getResource()) {
-				case "login":
-					roomList = new ArrayList<String>();
-					for (Room room : rooms) {
-						String roomName = room.getRoomName();
-						roomList.add(roomName);
-					}
+				case "join":
+					JoinReqDto joinReqDto = gson.fromJson(requestDto.getBody(), JoinReqDto.class);
+					username = joinReqDto.getNickname();
 
-					LoginReqDto loginReqDto = gson.fromJson(requestDto.getBody(), LoginReqDto.class);
-					nickname = loginReqDto.getNickname();
-					LoginRespDto loginRespDto = new LoginRespDto(loginReqDto.getNickname() + "어서오세요!", roomList);
-					String loginJson = gson.toJson(loginRespDto);
-					serverUtil.sendToAll("login", "ok", loginJson);
+					for (Room room : rooms) {
+						roomList.add(room.getRoomName());
+					}
+					System.out.println(roomList.size());
+
+					JoinRespDto joinRespDto = new JoinRespDto(username, roomList);
+					String userJson = gson.toJson(joinRespDto);
+
+					serverUtil.sendToAll(requestDto.getResource(), "ok", userJson);
 
 					break;
 
 				case "message":
-					MessageReqDto messageReqDto = gson.fromJson(requestDto.getBody(), MessageReqDto.class);
 
 
-						String message = messageReqDto.getToUser() + " > " + messageReqDto.getMessage();
-						MessageRespDto messageRespDto = new MessageRespDto(message);
-						serverUtil.sendToAll(requestDto.getResource(), "ok", gson.toJson(messageRespDto));
-
-//						String message = messageReqDto.getFromUser() + "["+ messageReqDto.getToUser() + " : ]" + messageReqDto.getMessage();
-//						MessageRespDto messageRespDto = new MessageRespDto(message);
-//						serverUtil.sendToUser(requestDto.getResource(), "ok", gson.toJson(messageRespDto), messageReqDto.getToUser());
-//					}
 					break;
 
-					case "createRoom":
+				case "createRoom":
+					CreateRoomReqDto createRoomReqDto = gson.fromJson(requestDto.getBody(), CreateRoomReqDto.class);
+					room = new Room(createRoomReqDto.getKingName(), createRoomReqDto.getRoomName(), users);
+					roomList.add(room.getRoomName());
 
-						CreateRoomReqDto createRoomReqDto = gson.fromJson(requestDto.getBody(), CreateRoomReqDto.class);
+					room.getUsers().add(this);
+					System.out.println(this.socket.getPort());
+					users = room.getUsers();
+					System.out.println("최초 방을 만들 때 유저:" + users.size());
 
-						String kingName = createRoomReqDto.getKingName();
-						String roomTitle = createRoomReqDto.getTitle();
-						int socketNumber = socket.getPort();
-						room = new Room(kingName, roomTitle, socketNumber);
-						rooms.add(room);
+					rooms.add(room);
 
-
-						roomList.add(room.getRoomName());
-
-						CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(roomList);
-						System.out.println(gson.toJson(createRoomRespDto));
-						serverUtil.createRoom(requestDto.getResource(), "ok", gson.toJson(createRoomRespDto));
+					CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(room.getRoomName());
+					String createdRoomName = gson.toJson(createRoomRespDto);
 
 
-						break;
+					serverUtil.sendToRoom(requestDto.getResource(), "ok", createdRoomName, room.getRoomName());
 
-					case "joinRoom":
-						JoinRoomReqDto joinRoomReqDto = gson.fromJson(requestDto.getBody(), JoinRoomReqDto.class);
 
-						System.out.println("join한 닉네임" + nickname);
-						System.out.println("소켓 번호: " + socket.getPort());
+					break;
 
-						break;
+				case "joinRoom":
+					JoinRoomReqDto joinRoomReqDto = gson.fromJson(requestDto.getBody(), JoinRoomReqDto.class);
 
-					case "deleteRoom":
+					System.out.println( "방에 있는 유저 수: "+ room.getUsers().size());
+					String roomName = joinRoomReqDto.getRoomName();
+
+					String joinName = joinRoomReqDto.getJoinName();
+
+					System.out.println(roomName + joinName);
+					System.out.println(room.getUsers().size());
+					System.out.println(this.socket.getPort());
+					room.getUsers().add(this);
+					JoinRoomRespDto joinRoomRespDto = new JoinRoomRespDto(joinName);
+					String joinRoomJson = gson.toJson(joinRoomRespDto);
+
+					serverUtil.sendToRoom(requestDto.getResource(), "ok", joinRoomJson, roomName);
+
+					break;
+
+				case "deleteRoom":
 
 
 				default:

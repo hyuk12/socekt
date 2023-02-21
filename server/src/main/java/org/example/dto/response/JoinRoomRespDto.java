@@ -6,5 +6,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class JoinRoomRespDto {
-    private String nickName;
+    private String joinName;
 }

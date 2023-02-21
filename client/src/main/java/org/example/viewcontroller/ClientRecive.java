@@ -1,5 +1,6 @@
 package org.example.viewcontroller;
 
+import java.awt.*;
 import java.io.BufferedReader;
 
 import java.io.IOException;
@@ -8,15 +9,15 @@ import java.io.InputStreamReader;
 
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import com.google.gson.JsonIOException;
-import com.google.gson.reflect.TypeToken;
-import org.example.dto.*;
+import org.example.dto.response.*;
 import org.example.entity.Room;
+import org.example.entity.RoomInfo;
 import org.example.view.ChattingClient;
 
 
@@ -32,7 +33,12 @@ public class ClientRecive extends Thread{
 	private InputStream inputStream;
 	private Gson gson;
 
-	private List<String> roomList = new ArrayList<String>();
+	private List<String> roomList = new ArrayList<>();
+	Map<Integer, String> roomIds = new HashMap<>();
+
+	private String roomTitle;
+	private String kingNick;
+
 	@Override
 	public void run() {
 		try {
@@ -45,7 +51,7 @@ public class ClientRecive extends Thread{
 				ResponseDto responseDto = gson.fromJson(request, ResponseDto.class);
 				
 				switch(responseDto.getResource()) {
-					case "login" :
+					case "join" :
 
 						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
 
@@ -67,27 +73,35 @@ public class ClientRecive extends Thread{
 					case "createRoom":
 
 						try {
-
+							System.out.println(responseDto.getBody());
 							CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class);
 
-							roomList.addAll(createRoomRespDto.getRoomList());
+							roomList.add(createRoomRespDto.getRoomName());
+
 							ChattingClient.getInstance().getContentView().setText("");
 
 							ChattingClient.getInstance().getModel().clear();
 							ChattingClient.getInstance().getModel().addAll(roomList);
-
+							ChattingClient.getInstance().getRoomTitle().setText("제목: "+ createRoomRespDto.getRoomName() + "의 방입니다.");
+							ChattingClient.getInstance().getContentView().setText("");
+							ChattingClient.getInstance().getContentView().append(createRoomRespDto.getRoomName() + "방이 생성되었습니다.");
 
 						} catch (JsonIOException e) {
 							e.printStackTrace();
 
 						}
-//						for (String title : rooms.getTitle()) {
-//							ChattingClient.getInstance().
-//						}
 
 						break;
 					case "joinRoom":
+						JoinRoomRespDto joinRoomRespDto = gson.fromJson(responseDto.getBody(), JoinRoomRespDto.class);
 
+						String joinName = joinRoomRespDto.getJoinName();
+
+						CardLayout mainLayout = (CardLayout)ChattingClient.getInstance().getMainPanel().getLayout();
+						mainLayout.show(ChattingClient.getInstance().getMainPanel(), "chattingRoom");
+						ChattingClient.getInstance().getRoomTitle().setText("제목: "+ roomTitle + "의 방입니다.");
+						ChattingClient.getInstance().getContentView().setText("");
+						ChattingClient.getInstance().getContentView().append(joinName + "님이 방에 입장하셨습니다.");
 						break;
 				
 				}
