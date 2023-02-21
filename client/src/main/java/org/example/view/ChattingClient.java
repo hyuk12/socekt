@@ -65,7 +65,7 @@ public class ChattingClient extends JFrame {
 	private JList<String> roomList;
 	private JScrollPane scrollpane;
 	@Getter @Setter
-	private DefaultListModel<String> model =  new DefaultListModel<>();
+	private DefaultListModel<String> model;
 
 	private DefaultListModel<String> userListModel;
 
@@ -73,6 +73,8 @@ public class ChattingClient extends JFrame {
 	private JLabel roomTitle;
 	private JTextArea contentView;
 
+	
+	String title;
 	/**
 	 * Launch the application.
 	 */
@@ -141,6 +143,10 @@ public class ChattingClient extends JFrame {
 
 						String joinJson = gson.toJson(loginReqDto);
 						sendRequest("join", joinJson);
+						if (socket != null) {
+							CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+							mainLayout.show(mainPanel, "chattingList");
+						}
 
 						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
@@ -157,10 +163,7 @@ public class ChattingClient extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (socket != null) {
-					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
-					mainLayout.show(mainPanel, "chattingList");
-				}
+				
 			}
 		});
 
@@ -182,7 +185,9 @@ public class ChattingClient extends JFrame {
 
 					String joinJson = gson.toJson(loginReqDto);
 					sendRequest("join", joinJson);
-
+					
+					
+					
 					if (socket != null) {
 						CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
 						mainLayout.show(mainPanel, "chattingList");
@@ -224,36 +229,37 @@ public class ChattingClient extends JFrame {
 		ImageIcon plusButton = new ImageIcon(ChattingClient.class.getResource("../image/플러스버튼이미지.png"));
 		JButton roomPlusButton = new JButton("");
 
-		roomList = new JList<>(model);
-		scrollpane = new JScrollPane(roomList);
-
-		scrollpane.setViewportView(roomList);
-		chattingListPanel.add(scrollpane);
 		roomPlusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				String title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
+				title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
 
 				String kingName = nickname;
 
 
-				CreateRoomReqDto createRoomReqDto = new CreateRoomReqDto(title, kingName);
-				String createRoomJson = gson.toJson(createRoomReqDto);
-
-				sendRequest("createRoom", createRoomJson);
-
+				
 
 				if (title != null) {
 
+					CreateRoomReqDto createRoomReqDto = new CreateRoomReqDto(title, kingName);
+					String createRoomJson = gson.toJson(createRoomReqDto);
+					
+					sendRequest("createRoom", createRoomJson);
+
 					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
 					mainLayout.show(mainPanel, "chattingRoom");
-
+					
 				}
 			}
 		});
-
+		model = new DefaultListModel<>();
+		roomList = new JList<>(model);
+		scrollpane = new JScrollPane(roomList);
+		
+		scrollpane.setViewportView(roomList);
+		chattingListPanel.add(scrollpane);
 
 
 		roomPlusButton.setBounds(0, 102, 101, 98);
@@ -274,7 +280,7 @@ public class ChattingClient extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 2) {
-
+					
 					index = roomList.locationToIndex(e.getPoint());
 					roomName = roomList.getModel().getElementAt(index);
 
@@ -329,7 +335,8 @@ public class ChattingClient extends JFrame {
 		messageSendButton.setFocusPainted(false);
 		messageSendButton.setContentAreaFilled(false);
 
-
+		
+		
 		messageInput = new JTextField();
 		messageInput.addKeyListener(new KeyAdapter() {
 			@Override
@@ -360,7 +367,7 @@ public class ChattingClient extends JFrame {
 		if(!messageInput.getText().isBlank()) {
 
 			/*from : room 객체에있는 유저들*/
-			MessageReqDto messageReqDto = new MessageReqDto(joinNickname.getText(), messageInput.getText());
+			MessageReqDto messageReqDto = new MessageReqDto(messageInput.getText());
 
 			sendRequest("message", gson.toJson(messageReqDto));
 

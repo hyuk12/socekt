@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ResponseDto<T> {
+public class ResponseDto {
     private String resource;
     private String status;
-    private T body;
+    private String body;
 }
