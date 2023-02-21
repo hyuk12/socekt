@@ -3,7 +3,7 @@ package org.example.adapter;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import org.example.dto.CreateRoomRespDto;
+import org.example.dto.response.CreateRoomRespDto;
 
 import java.io.IOException;
 

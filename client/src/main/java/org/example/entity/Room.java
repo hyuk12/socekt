@@ -11,7 +11,7 @@ import java.util.List;
 public class Room {
 	private String kingName;
 	private String roomName;
-	private int socketNumber;
+	private int socketPort;
 
 
 }

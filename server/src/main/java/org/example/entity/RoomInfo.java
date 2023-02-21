@@ -1,11 +1,11 @@
-package org.example.dto.request;
+package org.example.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class CreateRoomReqDto {
+public class RoomInfo {
     private String roomName;
     private String kingName;
 }

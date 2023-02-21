@@ -1,4 +1,4 @@
-package org.example.dto;
+package org.example.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,5 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class CreateRoomRespDto {
-	private List<String> roomList;
+	private String roomName;
+
 }

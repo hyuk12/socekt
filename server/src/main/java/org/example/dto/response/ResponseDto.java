@@ -3,10 +3,10 @@ package org.example.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
-public class ResponseDto {
-	private String resource;
-	private String status;
-	private String body;
+@AllArgsConstructor
+public class ResponseDto<T> {
+    private String resource;
+    private String status;
+    private T body;
 }

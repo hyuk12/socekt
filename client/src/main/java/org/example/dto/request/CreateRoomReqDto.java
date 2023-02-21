@@ -1,4 +1,4 @@
-package org.example.dto;
+package org.example.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CreateRoomReqDto {
 
-    private String title;
+    private String roomName;
     private String kingName;
 
 

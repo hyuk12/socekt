@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.dto.*;
+import org.example.dto.request.*;
 import org.example.entity.Room;
 import org.example.viewcontroller.ClientRecive;
 
@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 
 @Getter
@@ -121,10 +122,6 @@ public class ChattingClient extends JFrame {
 		joinNickname = new JTextField();
 		
 		joinNickname.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-
-			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -143,13 +140,7 @@ public class ChattingClient extends JFrame {
 
 
 						String joinJson = gson.toJson(loginReqDto);
-						RequestDto requestDto = new RequestDto("login", joinJson);
-						String requestJson = gson.toJson(requestDto);
-						System.out.println(joinJson);
-						OutputStream outputStream = socket.getOutputStream();
-						PrintWriter out = new PrintWriter(outputStream, true);
-
-						out.println(requestJson);
+						sendRequest("join", joinJson);
 
 						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
@@ -187,15 +178,15 @@ public class ChattingClient extends JFrame {
 
 					LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
 					nickname = joinNickname.getText();
+					userListModel.addElement(nickname);
 
 					String joinJson = gson.toJson(loginReqDto);
-					RequestDto requestDto = new RequestDto("login", joinJson);
-					String requestJson = gson.toJson(requestDto);
-					System.out.println(joinJson);
-					OutputStream outputStream = socket.getOutputStream();
-					PrintWriter out = new PrintWriter(outputStream, true);
+					sendRequest("join", joinJson);
 
-					out.println(requestJson);
+					if (socket != null) {
+						CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+						mainLayout.show(mainPanel, "chattingList");
+					}
 
 					JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
@@ -209,10 +200,7 @@ public class ChattingClient extends JFrame {
 
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (socket != null) {
-					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
-					mainLayout.show(mainPanel, "chattingList");
-				}
+
 			}
 		});
 		joinButton.setBounds(62, 559, 328, 49);
@@ -249,29 +237,19 @@ public class ChattingClient extends JFrame {
 				String title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
 
 				String kingName = nickname;
-				int portNumber = socket.getPort();
+
 
 				CreateRoomReqDto createRoomReqDto = new CreateRoomReqDto(title, kingName);
 				String createRoomJson = gson.toJson(createRoomReqDto);
-				RequestDto requestDto = new RequestDto("createRoom", createRoomJson);
-				String requestJson = gson.toJson(requestDto);
+
+				sendRequest("createRoom", createRoomJson);
 
 
-
-				try {
-					OutputStream outputStream = socket.getOutputStream();
-					PrintWriter out = new PrintWriter(outputStream, true);
-					out.println(requestJson);
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
 				if (title != null) {
 
 					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
 					mainLayout.show(mainPanel, "chattingRoom");
-					roomTitle.setText("제목: "+ title + "의 방입니다.");
-					contentView.setText("");
-					contentView.append(title + "방이 생성되었습니다.");
+
 				}
 			}
 		});
@@ -296,31 +274,18 @@ public class ChattingClient extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 2) {
-					String room = roomList.getSelectedValue().toString();
-					System.out.println(room);
+
 					index = roomList.locationToIndex(e.getPoint());
 					roomName = roomList.getModel().getElementAt(index);
-					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName);
+
+					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName, joinNickname.getText());
 					String joinRoomJson = gson.toJson(joinRoomReqDto);
-					RequestDto requestDto = new RequestDto("joinRoom", joinRoomJson);
-					String requestJson = gson.toJson(requestDto);
-					try {
-						OutputStream outputStream = socket.getOutputStream();
-						PrintWriter out = new PrintWriter(outputStream, true);
 
-						out.println(requestJson);
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}
-					int result = JOptionPane.showConfirmDialog(null, 
-							"방에 입장 하시겠습니까?", 
-							"Enter Room", 
-							JOptionPane.YES_NO_OPTION);
-					if (result == JOptionPane.YES_OPTION) {						
-						CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
-						mainLayout.show(mainPanel, "chattingRoom");
+					sendRequest("joinRoom", joinRoomJson);
 
-					} 
+
+
+
 				}
 			}
 		});
