@@ -1,11 +1,11 @@
-package org.example.dto.response;
+package org.example.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class MessageRespDto {
+public class MessageReqDto {
 
 	private String message;
 }

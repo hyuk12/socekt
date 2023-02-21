@@ -17,6 +17,7 @@ public class Room {
     private String roomName;
     private List<ServerThread> users = new ArrayList<>();
 
+    
     public Room(String kingName, String roomName, List<ServerThread> users) {
         this.kingName = kingName;
         this.roomName = roomName;
