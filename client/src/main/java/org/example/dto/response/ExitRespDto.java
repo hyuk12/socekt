@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class CreateRoomRespDto {
-	private String roomName;
-
+public class ExitRespDto {
+	private String kingName;
 }

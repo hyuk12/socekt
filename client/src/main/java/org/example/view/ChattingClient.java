@@ -260,8 +260,7 @@ public class ChattingClient extends JFrame {
 					String createRoomJson = gson.toJson(createRoomReqDto);
 
 					sendRequest("createRoom", createRoomJson);
-					sendRequest("createRoomList", createRoomJson);
-
+					
 					CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
 					mainLayout.show(mainPanel, "chattingRoom");
 				}
@@ -301,7 +300,9 @@ public class ChattingClient extends JFrame {
 					String joinRoomJson = gson.toJson(joinRoomReqDto);
 
 					sendRequest("joinRoom", joinRoomJson);
-
+					
+					CardLayout mainLayout = (CardLayout)ChattingClient.getInstance().getMainPanel().getLayout();
+					mainLayout.show(ChattingClient.getInstance().getMainPanel(), "chattingRoom");
 
 				}
 			}
@@ -325,6 +326,8 @@ public class ChattingClient extends JFrame {
 		roomTitle.setBounds(6, 6, 372, 52);
 		chattingRoomPanel.add(roomTitle);
 
+
+		
 		JButton exitRoomButton = new JButton("");
 		exitRoomButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -380,14 +383,17 @@ public class ChattingClient extends JFrame {
 		chattingRoomPanel.add(messageInput);
 		messageInput.setColumns(10);
 		
+		contentView = new JTextArea();
+		contentView.setEditable(false);
+		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(6, 70, 457, 624);
+		scrollPane_1.setColumnHeaderView(contentView);
+		scrollPane_1.setViewportView(contentView);
 		chattingRoomPanel.add(scrollPane_1);
 		
-		contentView = new JTextArea();
 
-		scrollPane_1.setColumnHeaderView(contentView);
-
+//		scrollPane_1.setColumnHeaderView(contentView);
 	}
 
 	private void sendMessage() {
