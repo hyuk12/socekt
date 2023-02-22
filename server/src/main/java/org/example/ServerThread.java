@@ -127,7 +127,8 @@ public class ServerThread extends Thread{
 				case "exitRoom":
 					ExitReqDto exitReqDto = gson.fromJson(requestDto.getBody(), ExitReqDto.class);
 					String exitNickname = exitReqDto.getNickname();
-					System.out.println(exitReqDto.getRoomName());
+
+					System.out.println(exitNickname);
 					
 					deleteRoomList(exitNickname);
 					break;
@@ -148,22 +149,17 @@ public class ServerThread extends Thread{
 	public void deleteRoomList(String exitNickname) {
 		List<String> username = new ArrayList<>();
 		Room roomToRemove = null;
+
 		for (Room room : rooms) {
 			username.add(exitNickname);
-			
-			if (roomToRemove != null) {
-				ResponseDto responseDto = new ResponseDto("exitRoom", "ok", gson.toJson(username));
-				rooms.remove(roomToRemove);
-				sendAll(responseDto, socketList);
-				reflashRoomList();
-				break;
-			}
-			
+
+
 			if(room.getKingName().equals(exitNickname)) {
+				System.out.println(room.getKingName());
 				roomToRemove = room;
-				
+
 				break;
-				
+
 			}else if (room.getUsers().contains(this)) {
 				room.getUsers().remove(this);
 				reflashRoomList();
@@ -173,7 +169,15 @@ public class ServerThread extends Thread{
 				reflashRoomList();
 			}
 		}
-		
+		if (roomToRemove != null) {
+			ResponseDto responseDto = new ResponseDto("exitRoom", "ok", gson.toJson(username));
+			rooms.remove(roomToRemove);
+			sendAll(responseDto, room.getUsers());
+			reflashRoomList();
+			return;
+		}
+
+
 	}
 	
 	public void reflashRoomList() {
