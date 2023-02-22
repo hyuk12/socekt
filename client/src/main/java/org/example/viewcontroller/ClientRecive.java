@@ -51,19 +51,6 @@ public class ClientRecive extends Thread{
 				ResponseDto responseDto = gson.fromJson(request, ResponseDto.class);
 				
 				switch(responseDto.getResource()) {
-					case "join" :
-
-						LoginRespDto loginRespDto = gson.fromJson(responseDto.getBody(), LoginRespDto.class);
-						if(loginRespDto.getRoomList() != null) {
-
-							ChattingClient.getInstance().getModel().clear();
-							ChattingClient.getInstance().getModel().addAll(loginRespDto.getRoomList());
-
-//								ChattingClient.getInstance().getChattingListPanel(); //없애
-						}
-						
-						break;
-						
 					case "message" :
 						System.out.println(responseDto.getBody());
 						MessageRespDto messageRespDto = gson.fromJson(responseDto.getBody(), MessageRespDto.class);
@@ -78,31 +65,9 @@ public class ClientRecive extends Thread{
 
 							CreateRoomRespDto createRoomRespDto = gson.fromJson(responseDto.getBody(), CreateRoomRespDto.class);
 
-
-
 								ChattingClient.getInstance().getContentView().setText("");
 								ChattingClient.getInstance().getRoomTitle().setText("제목: "+ createRoomRespDto.getRoomName()+ "의 방입니다.");
 								ChattingClient.getInstance().getContentView().append(createRoomRespDto.getRoomName() + "방이 생성되었습니다."+"\n");
-
-
-
-						} catch (JsonIOException e) {
-							e.printStackTrace();
-
-						}
-
-						break;
-					case "createRoomList":
-						try {
-
-							CreateRoomListRespDto createRoomListRespDto = gson.fromJson(responseDto.getBody(), CreateRoomListRespDto.class);
-
-							ChattingClient.getInstance().getModel().clear();
-							ChattingClient.getInstance().getModel().addAll(createRoomListRespDto.getRoomNameList());
-
-
-
-
 
 						} catch (JsonIOException e) {
 							e.printStackTrace();
@@ -114,12 +79,21 @@ public class ClientRecive extends Thread{
 						JoinRoomRespDto joinRoomRespDto = gson.fromJson(responseDto.getBody(), JoinRoomRespDto.class);
 
 						String joinName = joinRoomRespDto.getJoinName();
+						String roomName = joinRoomRespDto.getRoomName();
+			
 
 						CardLayout mainLayout = (CardLayout)ChattingClient.getInstance().getMainPanel().getLayout();
 						mainLayout.show(ChattingClient.getInstance().getMainPanel(), "chattingRoom");
-						ChattingClient.getInstance().getRoomTitle().setText("제목: "+ roomTitle + "의 방입니다.");
+						ChattingClient.getInstance().getRoomTitle().setText("제목: "+ roomName + "의 방입니다.");
 						ChattingClient.getInstance().getContentView().setText("");
-						ChattingClient.getInstance().getContentView().append(joinName + "님이 방에 입장하셨습니다.");
+						ChattingClient.getInstance().getContentView().append(joinName + "님이 방에 입장하셨습니다."+"\n");
+						break;
+					case "reflashRoom":
+						List<String> roomNames = gson.fromJson(responseDto.getBody(), List.class);
+						
+						ChattingClient.getInstance().getModel().clear();
+						ChattingClient.getInstance().getModel().addAll(roomNames);
+						
 						break;
 				
 				}

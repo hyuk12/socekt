@@ -7,4 +7,5 @@ import lombok.Getter;
 @Getter
 public class JoinRoomRespDto {
     private String joinName;
+    private String roomName;
 }

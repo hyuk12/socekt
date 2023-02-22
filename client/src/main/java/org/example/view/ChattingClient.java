@@ -148,7 +148,7 @@ public class ChattingClient extends JFrame {
 							mainLayout.show(mainPanel, "chattingList");
 						}
 
-						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+//						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (ConnectException ex) {
 						JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
@@ -193,7 +193,7 @@ public class ChattingClient extends JFrame {
 						mainLayout.show(mainPanel, "chattingList");
 					}
 
-					JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+//					JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (ConnectException ex) {
 					JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);

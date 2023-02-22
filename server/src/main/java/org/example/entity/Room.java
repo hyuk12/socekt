@@ -1,27 +1,25 @@
 package org.example.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-
-import org.example.ServerThread;
-
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+import org.example.ServerThread;
 
+import com.google.gson.annotations.Expose;
+
+import lombok.Getter;
+
+@Getter
 public class Room {
     private String kingName;
     private String roomName;
     private List<ServerThread> users = new ArrayList<>();
 
     
-    public Room(String kingName, String roomName, List<ServerThread> users) {
+    public Room(String kingName, String roomName) {
         this.kingName = kingName;
         this.roomName = roomName;
-        this.users = users;
+        this.users = new ArrayList<>();
 
     }
 }

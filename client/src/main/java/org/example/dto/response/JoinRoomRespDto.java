@@ -10,4 +10,5 @@ import java.util.List;
 @Getter
 public class JoinRoomRespDto {
    private String joinName;
+   private String roomName;
 }
