@@ -72,6 +72,7 @@ public class ChattingClient extends JFrame {
 	private JPanel chattingListPanel;
 	private JLabel roomTitle;
 	private JTextArea contentView;
+	private JButton exitRoomButton;
 
 	
 	String title;
@@ -109,7 +110,7 @@ public class ChattingClient extends JFrame {
 
 		joinPanel = new JPanel();
 		joinPanel.setBackground(new Color(255, 217, 0));
-		mainPanel.add(joinPanel, "name_49023625943041");
+		mainPanel.add(joinPanel, "joinPanel");
 		joinPanel.setLayout(null);
 		
 		kakaoImage = new ImageIcon(ChattingClient.class.getResource("../image/카카오메인이미지.png"));
@@ -128,6 +129,52 @@ public class ChattingClient extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if (joinNickname.getText().isBlank()) {
+						JOptionPane.showMessageDialog(null, "please input nickname", "입장불가", JOptionPane.ERROR_MESSAGE);
+					} else {
+						String ip = "127.0.0.1";
+						int port = 8889;
+
+						try {
+							socket = new Socket(ip, port);
+							ClientRecive clientRecive = new ClientRecive(socket);
+							clientRecive.start();
+
+							LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
+							nickname = joinNickname.getText();
+							userListModel.addElement(nickname);
+
+
+							String joinJson = gson.toJson(loginReqDto);
+							sendRequest("join", joinJson);
+							if (socket != null) {
+								CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
+								mainLayout.show(mainPanel, "chattingList");
+							}
+
+							//						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+
+						} catch (ConnectException ex) {
+							JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+
+		joinButton = new JButton("");
+		joinButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (joinNickname.getText().isBlank()) {
+					JOptionPane.showMessageDialog(null, "please input nickname", "입장불가", JOptionPane.ERROR_MESSAGE);
+
+
+				} else{
+					joinButton.setEnabled(true);
+					joinButton.setFocusable(true);
 					String ip = "127.0.0.1";
 					int port = 8889;
 
@@ -140,15 +187,17 @@ public class ChattingClient extends JFrame {
 						nickname = joinNickname.getText();
 						userListModel.addElement(nickname);
 
-
 						String joinJson = gson.toJson(loginReqDto);
 						sendRequest("join", joinJson);
-						if (socket != null) {
-							CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+
+
+						if (socket != null && !joinNickname.getText().isBlank()) {
+							joinButton.setEnabled(true);
+							CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
 							mainLayout.show(mainPanel, "chattingList");
 						}
 
-//						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
+						//					JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (ConnectException ex) {
 						JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
@@ -158,56 +207,8 @@ public class ChattingClient extends JFrame {
 				}
 			}
 		});
+
 		
-		joinNickname.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-
-		joinButton = new JButton("");
-		joinButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String ip = "127.0.0.1";
-				int port = 8889;
-
-				try {
-					socket = new Socket(ip, port);
-					ClientRecive clientRecive = new ClientRecive(socket);
-					clientRecive.start();
-
-					LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
-					nickname = joinNickname.getText();
-					userListModel.addElement(nickname);
-
-					String joinJson = gson.toJson(loginReqDto);
-					sendRequest("join", joinJson);
-					
-					
-					
-					if (socket != null) {
-						CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
-						mainLayout.show(mainPanel, "chattingList");
-					}
-
-//					JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
-
-				} catch (ConnectException ex) {
-					JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-
-		joinButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
 		joinButton.setBounds(62, 559, 328, 49);
 		joinPanel.add(joinButton);
 
@@ -237,21 +238,32 @@ public class ChattingClient extends JFrame {
 				title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
 
 				String kingName = nickname;
+				boolean flag = true;
+				if (title == null) { //값이 없을 때 취소버튼
+					CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
+					mainLayout.show(mainPanel, "chattingList");
+				} else if (title.isBlank()) { //값이 없을때 확인버튼
+					while (flag) { //값이 없을때 확인버튼 시 돌아가는 무한루프
+						JOptionPane.showMessageDialog(null, "방제목 입력 해주세요!!!", "!!", JOptionPane.ERROR_MESSAGE);
+						title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
 
-
-				
-
-				if (title != null) {
-
+						if (title == null) { // 값 입력 대기중에 취소 버튼
+							break; //반복종료 while 문 밖으로 나감
+						} else if (!title.isBlank()) {
+							CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
+							mainLayout.show(mainPanel, "chattingRoom");
+							break; // 입력됐을때 반복종료
+						}
+					}
+				} else {
 					CreateRoomReqDto createRoomReqDto = new CreateRoomReqDto(title, kingName);
 					String createRoomJson = gson.toJson(createRoomReqDto);
-					
+
 					sendRequest("createRoom", createRoomJson);
 					sendRequest("createRoomList", createRoomJson);
 
-					CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+					CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
 					mainLayout.show(mainPanel, "chattingRoom");
-					
 				}
 			}
 		});
@@ -291,8 +303,6 @@ public class ChattingClient extends JFrame {
 					sendRequest("joinRoom", joinRoomJson);
 
 
-
-
 				}
 			}
 		});
@@ -308,7 +318,7 @@ public class ChattingClient extends JFrame {
 
 		chattingRoomPanel.setLayout(null);
 		chattingRoomPanel.setBackground(new Color(255, 217, 0));
-//		System.out.println(model.getElementAt(index));
+
 		roomTitle = new JLabel();
 		roomTitle.setFont(new Font("Verdana", Font.PLAIN, 16));
 		roomTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -316,6 +326,22 @@ public class ChattingClient extends JFrame {
 		chattingRoomPanel.add(roomTitle);
 
 		JButton exitRoomButton = new JButton("");
+		exitRoomButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				ExitReqDto exitReqDto = new ExitReqDto(nickname, roomName);
+				
+				String exitJson = gson.toJson(exitReqDto);
+				System.out.println(exitJson);
+				sendRequest("exitRoom", exitJson);
+				
+				CardLayout mainLayout = (CardLayout)mainPanel.getLayout();
+				mainLayout.show(mainPanel, "chattingList");
+			}
+		});
+		
+		
 		exitRoomButton.setBounds(373, 6, 90, 52);
 		chattingRoomPanel.add(exitRoomButton);
 

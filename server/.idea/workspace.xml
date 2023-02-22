@@ -10,7 +10,7 @@
       <change beforePath="$PROJECT_DIR$/../client/src/main/java/org/example/viewcontroller/ClientRecive.java" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/main/java/org/example/viewcontroller/ClientRecive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ServerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entity/Room.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,8 +36,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="feature/#4-서버와클라이언트작업" />
-                    <option name="lastUsedInstant" value="1676699516" />
+                    <option name="branchName" value="feature/#4-채팅구현" />
+                    <option name="lastUsedInstant" value="1677028742" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -139,6 +139,7 @@
       <workItem from="1676937152277" duration="11707000" />
       <workItem from="1676959366331" duration="9829000" />
       <workItem from="1676987530911" duration="2199000" />
+      <workItem from="1677057496048" duration="1448000" />
     </task>
     <servers />
   </component>
