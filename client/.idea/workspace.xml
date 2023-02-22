@@ -6,13 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="aa7a9888-a67d-4c3b-bec1-d0293ec0741f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomListRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/response/CreateRoomListRespDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/ServerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/CreateRoomListRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/CreateRoomListRespDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/CreateRoomRespDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/dto/response/CreateRoomRespDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/entity/Room.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,8 +36,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="feature/#4-클라이언트쪽개발" />
-                    <option name="lastUsedInstant" value="1676694239" />
+                    <option name="branchName" value="feature/#4-채팅구현" />
+                    <option name="lastUsedInstant" value="1677028742" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -157,6 +155,7 @@
       <workItem from="1676937128321" duration="10004000" />
       <workItem from="1676959461398" duration="9053000" />
       <workItem from="1676987512367" duration="2216000" />
+      <workItem from="1677056862892" duration="2079000" />
     </task>
     <servers />
   </component>

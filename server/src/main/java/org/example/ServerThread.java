@@ -8,13 +8,16 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.example.dto.request.CreateRoomReqDto;
+import org.example.dto.request.ExitReqDto;
 import org.example.dto.request.JoinReqDto;
 import org.example.dto.request.JoinRoomReqDto;
 import org.example.dto.request.MessageReqDto;
 import org.example.dto.request.RequestDto;
+import org.example.dto.response.ExitRespDto;
 import org.example.dto.response.JoinRoomRespDto;
 import org.example.dto.response.MessageRespDto;
 import org.example.dto.response.ResponseDto;
@@ -31,6 +34,7 @@ public class ServerThread extends Thread{
 	@Getter
 	private static List<ServerThread> socketList = new ArrayList<ServerThread>();
 	private static List<Room> rooms = new ArrayList<>();
+	private static List<String> roomIdList = new ArrayList<>();
 	@Getter
 	private final Socket socket;
 	private InputStream inputStream;
@@ -40,6 +44,7 @@ public class ServerThread extends Thread{
 	private Room room;
 
 	private ServerUtil serverUtil;
+
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -82,17 +87,14 @@ public class ServerThread extends Thread{
 					
 					responseDto = new ResponseDto(requestDto.getResource(), "ok", messageJson);
 					
-//					serverUtil.sendToRoom(requestDto.getResource(), "ok", createdRoomName, createRoomReqDto.getRoomName());
-					
-					outputStream = this.getSocket().getOutputStream();
-					writer = new PrintWriter(outputStream, true);
-							
-					writer.println(gson.toJson(responseDto));
-					
+					sendAll(responseDto, room.getUsers());
 					break;
 
 				case "createRoom":
 					CreateRoomReqDto createRoomReqDto = gson.fromJson(requestDto.getBody(), CreateRoomReqDto.class);
+					String roomId = createRoomReqDto.getKingName() + createRoomReqDto.getRoomName();
+					roomIdList.add(roomId);
+					
 					room = new Room(createRoomReqDto.getKingName(), createRoomReqDto.getRoomName());
 					room.getUsers().add(this);
 					rooms.add(room);
@@ -122,9 +124,14 @@ public class ServerThread extends Thread{
 					sendAll(responseDto, room.getUsers());
 					break;
 
-				case "deleteRoom":
-
-
+				case "exitRoom":
+					ExitReqDto exitReqDto = gson.fromJson(requestDto.getBody(), ExitReqDto.class);
+					String exitNickname = exitReqDto.getNickname();
+					System.out.println(exitReqDto.getRoomName());
+					
+					deleteRoomList(exitNickname);
+					break;
+				
 				default:
 					break;
 				}
@@ -135,6 +142,37 @@ public class ServerThread extends Thread{
 			e.printStackTrace();
 		}
 
+		
+	}
+	
+	public void deleteRoomList(String exitNickname) {
+		List<String> username = new ArrayList<>();
+		Room roomToRemove = null;
+		for (Room room : rooms) {
+			username.add(exitNickname);
+			
+			if (roomToRemove != null) {
+				ResponseDto responseDto = new ResponseDto("exitRoom", "ok", gson.toJson(username));
+				rooms.remove(roomToRemove);
+				sendAll(responseDto, socketList);
+				reflashRoomList();
+				break;
+			}
+			
+			if(room.getKingName().equals(exitNickname)) {
+				roomToRemove = room;
+				
+				break;
+				
+			}else if (room.getUsers().contains(this)) {
+				room.getUsers().remove(this);
+				reflashRoomList();
+				break;
+			} else {
+				room.getUsers().remove(this);
+				reflashRoomList();
+			}
+		}
 		
 	}
 	
