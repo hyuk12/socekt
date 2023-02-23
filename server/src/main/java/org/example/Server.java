@@ -41,9 +41,12 @@ public class Server {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (StringIndexOutOfBoundsException e) {
+			System.err.println("클라이언트 강제종료 되었다.");
 		} finally {
 			if(serverSocket != null) {
 				try {
+					
 					serverSocket.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
