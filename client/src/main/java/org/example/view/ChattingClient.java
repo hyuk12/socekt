@@ -1,41 +1,53 @@
 package org.example.view;
 
-import com.google.gson.Gson;
-
-import lombok.Getter;
-import lombok.Setter;
-import org.example.dto.request.*;
-import org.example.entity.Room;
-import org.example.viewcontroller.ClientRecive;
-
-import java.awt.EventQueue;
-
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-
 import java.awt.CardLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.nio.channels.SocketChannel;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import org.example.dto.request.CreateRoomReqDto;
+import org.example.dto.request.ExitReqDto;
+import org.example.dto.request.JoinRoomReqDto;
+import org.example.dto.request.LoginReqDto;
+import org.example.dto.request.MessageReqDto;
+import org.example.dto.request.RequestDto;
+import org.example.entity.Room;
+import org.example.viewcontroller.ClientRecive;
+
+import com.google.gson.Gson;
+
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
 public class ChattingClient extends JFrame {
 	private static final long serialVersionUID = 1L;
-
+	
 	private static ChattingClient instance;
 	
 	public static ChattingClient getInstance() {
@@ -44,6 +56,13 @@ public class ChattingClient extends JFrame {
 		}
 		return instance;
 	}
+	
+	public void exit() {
+		System.exit(0);
+	}
+	
+	private ClientRecive clientRecive;
+	
 
 	private Socket socket;
 	private Gson gson;
@@ -64,6 +83,7 @@ public class ChattingClient extends JFrame {
 	private JTextField messageInput;
 	private JList<String> roomList;
 	private JScrollPane scrollpane;
+	
 	@Getter @Setter
 	private DefaultListModel<String> model;
 
@@ -75,31 +95,30 @@ public class ChattingClient extends JFrame {
 	private JButton exitRoomButton;
 
 	
-	String title;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChattingClient frame = ChattingClient.getInstance();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	private String title;
+	
 	/**
 	 * Create the frame.
 	 */
+	
 	private ChattingClient() {
+		
+		
 		gson = new Gson();
 		userListModel = new DefaultListModel<>();
 		userList = new JList<String>(userListModel);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int confirmResult = JOptionPane.showConfirmDialog(ChattingClient.this, "클라이언트 끄시겠습니까?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+				if (confirmResult == JOptionPane.YES_OPTION) {
+					sendRequest("exit", null);
+				}
+			}
+			
+		});
 		setBounds(100, 100, 480, 800);
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -129,6 +148,7 @@ public class ChattingClient extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					
 					if (joinNickname.getText().isBlank()) {
 						JOptionPane.showMessageDialog(null, "please input nickname", "입장불가", JOptionPane.ERROR_MESSAGE);
 					} else {
@@ -140,20 +160,19 @@ public class ChattingClient extends JFrame {
 							ClientRecive clientRecive = new ClientRecive(socket);
 							clientRecive.start();
 
-							LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
-							nickname = joinNickname.getText();
-							userListModel.addElement(nickname);
-
-
+							nickname = joinNickname.getText() + socket.getLocalPort();
+							
+							LoginReqDto loginReqDto = new LoginReqDto(nickname);
+							
 							String joinJson = gson.toJson(loginReqDto);
 							sendRequest("join", joinJson);
+
 							if (socket != null) {
+					
 								CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
 								mainLayout.show(mainPanel, "chattingList");
+										
 							}
-
-							//						JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
-
 						} catch (ConnectException ex) {
 							JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
 						} catch (IOException ex) {
@@ -183,8 +202,11 @@ public class ChattingClient extends JFrame {
 						ClientRecive clientRecive = new ClientRecive(socket);
 						clientRecive.start();
 
-						LoginReqDto loginReqDto = new LoginReqDto(joinNickname.getText());
-						nickname = joinNickname.getText();
+						nickname = joinNickname.getText() + socket.getLocalPort();
+						
+						LoginReqDto loginReqDto = new LoginReqDto(nickname);
+						
+						
 						userListModel.addElement(nickname);
 
 						String joinJson = gson.toJson(loginReqDto);
@@ -196,8 +218,6 @@ public class ChattingClient extends JFrame {
 							CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
 							mainLayout.show(mainPanel, "chattingList");
 						}
-
-						//					JOptionPane.showMessageDialog(null, loginReqDto.getNickname() + "님 환영합니다.", "환영메세지", JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (ConnectException ex) {
 						JOptionPane.showMessageDialog(null, "접속오류", "접속오류", JOptionPane.ERROR_MESSAGE);
@@ -274,7 +294,7 @@ public class ChattingClient extends JFrame {
 		chattingListPanel.add(scrollpane);
 
 
-		roomPlusButton.setBounds(0, 102, 101, 98);
+		roomPlusButton.setBounds(0, 102, 113, 98);
 		chattingListPanel.add(roomPlusButton);
 		roomPlusButton.setIcon(plusButton);
 		roomPlusButton.setBorderPainted(false);
@@ -296,7 +316,7 @@ public class ChattingClient extends JFrame {
 					index = roomList.locationToIndex(e.getPoint());
 					roomName = roomList.getModel().getElementAt(index);
 
-					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName, joinNickname.getText());
+					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName, nickname);
 					String joinRoomJson = gson.toJson(joinRoomReqDto);
 
 					sendRequest("joinRoom", joinRoomJson);
@@ -309,17 +329,11 @@ public class ChattingClient extends JFrame {
 		});
 		
 		roomList.setBounds(0, 212, 324, -81);
-
 		scrollpane.setBounds(113, 0, 351, 762);
-
-
 		chattingRoomPanel = new JPanel();
-		
 		mainPanel.add(chattingRoomPanel, "chattingRoom");
-
 		chattingRoomPanel.setLayout(null);
 		chattingRoomPanel.setBackground(new Color(255, 217, 0));
-
 		roomTitle = new JLabel();
 		roomTitle.setFont(new Font("Verdana", Font.PLAIN, 16));
 		roomTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -345,7 +359,7 @@ public class ChattingClient extends JFrame {
 		});
 		
 		
-		exitRoomButton.setBounds(373, 6, 90, 52);
+		exitRoomButton.setBounds(373, 0, 97, 70);
 		chattingRoomPanel.add(exitRoomButton);
 
 		ImageIcon exitButton = new ImageIcon(ChattingClient.class.getResource("../image/나가기.png"));
@@ -391,10 +405,10 @@ public class ChattingClient extends JFrame {
 		scrollPane_1.setColumnHeaderView(contentView);
 		scrollPane_1.setViewportView(contentView);
 		chattingRoomPanel.add(scrollPane_1);
-		
 
-//		scrollPane_1.setColumnHeaderView(contentView);
 	}
+	
+	
 
 	private void sendMessage() {
 		if(!messageInput.getText().isBlank()) {
@@ -423,4 +437,11 @@ public class ChattingClient extends JFrame {
 			e.printStackTrace();
 		}
 	}
+
+
+
+	public void setClientRecive(ClientRecive clientRecive) {
+		this.clientRecive = clientRecive;
+	}
+	
 }

@@ -10,5 +10,5 @@ import org.example.entity.Room;
 @AllArgsConstructor
 @Getter
 public class JoinRespDto {
-    private List<Room> roomList;
+    private String nickname;
 }

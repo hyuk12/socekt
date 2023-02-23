@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 public class LoginRespDto {
 
-	private String welcomeMessage;
-	private List<String> roomList;
+	private String nickname;
 	
 }
