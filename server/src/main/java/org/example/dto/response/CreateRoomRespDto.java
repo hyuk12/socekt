@@ -9,4 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateRoomRespDto {
     private String roomName;
+    private String kingName;
 }

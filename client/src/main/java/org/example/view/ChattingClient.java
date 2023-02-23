@@ -335,7 +335,7 @@ public class ChattingClient extends JFrame {
 		chattingRoomPanel.setLayout(null);
 		chattingRoomPanel.setBackground(new Color(255, 217, 0));
 		roomTitle = new JLabel();
-		roomTitle.setFont(new Font("Verdana", Font.PLAIN, 16));
+		roomTitle.setFont(new Font("D2coding", Font.PLAIN, 16));
 		roomTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		roomTitle.setBounds(6, 6, 372, 52);
 		chattingRoomPanel.add(roomTitle);
@@ -414,7 +414,7 @@ public class ChattingClient extends JFrame {
 		if(!messageInput.getText().isBlank()) {
 
 			/*from : room 객체에있는 유저들*/
-			MessageReqDto messageReqDto = new MessageReqDto(messageInput.getText());
+			MessageReqDto messageReqDto = new MessageReqDto(nickname,messageInput.getText());
 
 			sendRequest("message", gson.toJson(messageReqDto));
 

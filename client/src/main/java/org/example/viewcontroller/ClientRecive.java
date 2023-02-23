@@ -56,9 +56,9 @@ public class ClientRecive extends Thread{
 					case "message" :
 						MessageRespDto messageRespDto = gson.fromJson(responseDto.getBody(), MessageRespDto.class);
 						String message = messageRespDto.getMessage();
+						String toUser = messageRespDto.getToUser();
 						
-						
-						ChattingClient.getInstance().getContentView().append(message + "\n");
+						ChattingClient.getInstance().getContentView().append(" " + toUser + " > " + message + "\n");
 
 						break;
 						
@@ -69,7 +69,7 @@ public class ClientRecive extends Thread{
 							String rNames = createRoomRespDto.getRoomName();
 							
 
-							ChattingClient.getInstance().getRoomTitle().setText("제목: "+ rNames + "의 방입니다.");
+							ChattingClient.getInstance().getRoomTitle().setText(rNames + "의 방입니다.");
 							ChattingClient.getInstance().getContentView().setText("");
 							ChattingClient.getInstance().getContentView().append(rNames + "방이 생성되었습니다."+"\n");
 						
@@ -91,7 +91,7 @@ public class ClientRecive extends Thread{
 							ChattingClient.getInstance().getContentView().setText("");
 						}
 						
-						ChattingClient.getInstance().getRoomTitle().setText("제목: "+ roomName+ "의 방입니다.");
+						ChattingClient.getInstance().getRoomTitle().setText(roomName+ "의 방입니다.");
 						ChattingClient.getInstance().getContentView().append(joinName + "님이 방에 입장하셨습니다."+"\n");
 						
 						break;

@@ -7,5 +7,6 @@ import lombok.Getter;
 @Getter
 public class CreateRoomRespDto {
 	private String roomName;
+	private String kingName;
 
 }
