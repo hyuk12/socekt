@@ -83,8 +83,9 @@ public class ServerThread extends Thread{
 				case "message":
 					MessageReqDto messageReqDto = gson.fromJson(requestDto.getBody(), MessageReqDto.class);
 					String message = messageReqDto.getMessage();
+					String toUser = messageReqDto.getToUser();
 					
-					MessageRespDto messageRespDto = new MessageRespDto(message);
+					MessageRespDto messageRespDto = new MessageRespDto(message, toUser);
 					String messageJson = gson.toJson(messageRespDto);
 					
 					responseDto = new ResponseDto(requestDto.getResource(), "ok", messageJson);
@@ -99,7 +100,9 @@ public class ServerThread extends Thread{
 					room.getUsers().add(this);
 					rooms.add(room);
 					
-					CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(createRoomReqDto.getRoomName());
+					String rn = "채팅방" + ": " + createRoomReqDto.getRoomName(); 
+					
+					CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(rn,createRoomReqDto.getRoomName());
 					responseDto = new ResponseDto(requestDto.getResource(), "ok", gson.toJson(createRoomRespDto));
 					
 					sendAll(responseDto, room.getUsers());
@@ -113,7 +116,7 @@ public class ServerThread extends Thread{
 
 					String roomName = joinRoomReqDto.getRoomName();
 					rooms.forEach(room -> {
-						if(("채팅방" + (rooms.indexOf(room) + 1) + ": " + room.getRoomName()).equals(roomName)) {
+						if(("채팅방" + ": " + room.getRoomName()).equals(roomName)) {
 							this.room = room;
 						}
 					});
@@ -193,8 +196,9 @@ public class ServerThread extends Thread{
 	public void reflashRoomList() {
 		List<String> roomNames = new ArrayList<>();
 		rooms.forEach(room -> {
-			roomNames.add("채팅방" + (rooms.indexOf(room) + 1) + ": " + room.getRoomName());
+			roomNames.add("채팅방" + ": " + room.getRoomName());
 		});
+		
 		ResponseDto responseDto = new ResponseDto("reflashRoom", "ok", gson.toJson(roomNames));
 		
 		sendAll(responseDto, socketList);

@@ -8,4 +8,5 @@ import lombok.Getter;
 public class MessageReqDto {
 
 	private String message;
+	private String toUser;
 }
