@@ -3,9 +3,7 @@ package org.example.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.example.ServerThread;
-
-
+import org.example.server.ServerThread;
 
 import lombok.Getter;
 
