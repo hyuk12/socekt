@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa7a9888-a67d-4c3b-bec1-d0293ec0741f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/view/ChattingClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/viewcontroller/ClientRecive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/entity/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/entity/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/org/example/server/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/org/example/server/ServerThread.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -173,7 +170,7 @@
       <workItem from="1677056862892" duration="3800000" />
       <workItem from="1677204283871" duration="693000" />
       <workItem from="1677205045583" duration="177000" />
-      <workItem from="1677205817302" duration="2590000" />
+      <workItem from="1677205817302" duration="2966000" />
     </task>
     <servers />
   </component>

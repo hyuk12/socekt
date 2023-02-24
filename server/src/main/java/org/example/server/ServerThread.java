@@ -96,12 +96,12 @@ public class ServerThread extends Thread{
 				case "createRoom":
 					CreateRoomReqDto createRoomReqDto = gson.fromJson(requestDto.getBody(), CreateRoomReqDto.class);
 					
-					room = new Room(createRoomReqDto.getKingName(), createRoomReqDto.getRoomName());
+					room = new Room(createRoomReqDto.getKingName().replaceAll(" ", ""), createRoomReqDto.getRoomName());
 					room.getUsers().add(this);
 					rooms.add(room);
 					
 					
-					CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(createRoomReqDto.getRoomName(), createRoomReqDto.getKingName());
+					CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(createRoomReqDto.getRoomName(), createRoomReqDto.getKingName().replaceAll(" ", ""));
 					responseDto = new ResponseDto(requestDto.getResource(), "ok", gson.toJson(createRoomRespDto));
 					
 					sendAll(responseDto, room.getUsers());
@@ -124,7 +124,7 @@ public class ServerThread extends Thread{
 					
 					String joinName = joinRoomReqDto.getJoinName();
 
-					JoinRoomRespDto joinRoomRespDto = new JoinRoomRespDto(joinName, roomName);
+					JoinRoomRespDto joinRoomRespDto = new JoinRoomRespDto(joinName.replaceAll(" ", ""), roomName);
 					String joinRoomJson = gson.toJson(joinRoomRespDto);
 
 					responseDto = new ResponseDto(requestDto.getResource(), "ok", joinRoomJson);
@@ -135,13 +135,13 @@ public class ServerThread extends Thread{
 					ExitReqDto exitReqDto = gson.fromJson(requestDto.getBody(), ExitReqDto.class);
 					String exitNickname = exitReqDto.getNickname();
 					
-					deleteRoomList(exitNickname);
+					deleteRoomList(exitNickname.replaceAll(" ", ""));
 					
 					break;
 				case "exit":
 					ForceQuitReqDto forceQuitReqDto = gson.fromJson(requestDto.getBody(), ForceQuitReqDto.class);
 					
-					deleteRoomList(forceQuitReqDto.getNickname());
+					deleteRoomList(forceQuitReqDto.getNickname().replaceAll(" ",""));
 //					deleteRoomList(exitNickname);
 					isRunning = false;
 					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);

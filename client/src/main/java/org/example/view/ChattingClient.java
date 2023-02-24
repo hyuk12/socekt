@@ -288,7 +288,7 @@ public class ChattingClient extends JFrame {
 						}
 					}
 				} else {
-					CreateRoomReqDto createRoomReqDto = new CreateRoomReqDto(title, kingName);
+					CreateRoomReqDto createRoomReqDto = new CreateRoomReqDto(title, kingName.replaceAll(" ",""));
 					String createRoomJson = gson.toJson(createRoomReqDto);
 
 					sendRequest("createRoom", createRoomJson);
@@ -360,7 +360,7 @@ public class ChattingClient extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				ExitReqDto exitReqDto = new ExitReqDto(nickname, roomName);
+				ExitReqDto exitReqDto = new ExitReqDto(nickname.replaceAll(" ", ""), roomName);
 				
 				String exitJson = gson.toJson(exitReqDto);
 				System.out.println(exitJson);
