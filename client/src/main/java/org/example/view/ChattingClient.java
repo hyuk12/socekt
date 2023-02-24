@@ -167,7 +167,7 @@ public class ChattingClient extends JFrame {
 							ClientRecive clientRecive = new ClientRecive(socket);
 							clientRecive.start();
 
-							nickname = joinNickname.getText() + socket.getLocalPort();
+							nickname = joinNickname.getText() + " [" +  socket.getLocalPort() + "]";
 							
 							LoginReqDto loginReqDto = new LoginReqDto(nickname);
 							
@@ -208,7 +208,8 @@ public class ChattingClient extends JFrame {
 						ClientRecive clientRecive = new ClientRecive(socket);
 						clientRecive.start();
 
-						nickname = joinNickname.getText() + socket.getLocalPort();
+						nickname = joinNickname.getText() + " ["+ socket.getLocalPort() + "]";
+						System.out.println("로그인시:" + nickname);
 						
 						LoginReqDto loginReqDto = new LoginReqDto(nickname);
 						
@@ -264,6 +265,7 @@ public class ChattingClient extends JFrame {
 				title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
 
 				String kingName = nickname;
+				System.out.println("방장:" + kingName);
 				boolean flag = true;
 				if (title == null) { //값이 없을 때 취소버튼
 					CardLayout mainLayout = (CardLayout) mainPanel.getLayout();
@@ -322,6 +324,7 @@ public class ChattingClient extends JFrame {
 					index = roomList.locationToIndex(e.getPoint());
 					roomName = roomList.getModel().getElementAt(index);
 
+					System.out.println("조인:" + nickname);
 					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName, nickname);
 					String joinRoomJson = gson.toJson(joinRoomReqDto);
 
