@@ -170,13 +170,13 @@ public class ServerThread extends Thread{
 		Room roomToRemove = null;
 
 		for (Room room : rooms) {
-			username.add(exitNickname);
-			if(room.getKingName().equals(exitNickname)) {
+			username.add(exitNickname.replaceAll(" ",""));
+			if(room.getKingName().equals(exitNickname.replaceAll(" ",""))) {
 				roomToRemove = room;
 				
 				break;
 			}else if (room.getUsers().contains(this)) {
-				ExitRespDto exitRespDto = new ExitRespDto(exitNickname);
+				ExitRespDto exitRespDto = new ExitRespDto(exitNickname.replaceAll(" ",""));
 				String exitString = gson.toJson(exitRespDto);
 				ResponseDto responseDto = new ResponseDto("exitRoom", "ok",exitString);
 				room.getUsers().remove(this);

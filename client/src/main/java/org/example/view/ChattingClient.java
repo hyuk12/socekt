@@ -119,9 +119,13 @@ public class ChattingClient extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				int confirmResult = JOptionPane.showConfirmDialog(ChattingClient.this, "클라이언트 끄시겠습니까?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
 				if (confirmResult == JOptionPane.YES_OPTION) {
-					ForceQuitReqDto forceQuitReqDto = new ForceQuitReqDto(nickname);
-					
-					sendRequest("exit", gson.toJson(forceQuitReqDto));//gson => null
+					if (socket != null) {
+						ForceQuitReqDto forceQuitReqDto = new ForceQuitReqDto(nickname);
+						sendRequest("exit", gson.toJson(forceQuitReqDto));//gson => null
+					} else {
+						dispose();
+						System.exit(0);
+					}
 				}
 			}
 			
@@ -169,7 +173,7 @@ public class ChattingClient extends JFrame {
 
 							nickname = joinNickname.getText() + " [" +  socket.getLocalPort() + "]";
 							
-							LoginReqDto loginReqDto = new LoginReqDto(nickname);
+							LoginReqDto loginReqDto = new LoginReqDto(nickname.replaceAll(" ",""));
 							
 							String joinJson = gson.toJson(loginReqDto);
 							sendRequest("join", joinJson);
@@ -208,10 +212,10 @@ public class ChattingClient extends JFrame {
 						ClientRecive clientRecive = new ClientRecive(socket);
 						clientRecive.start();
 
-						nickname = joinNickname.getText() + " ["+ socket.getLocalPort() + "]";
+						nickname = joinNickname.getText() + " [" +  socket.getLocalPort() + "]";
 						System.out.println("로그인시:" + nickname);
 						
-						LoginReqDto loginReqDto = new LoginReqDto(nickname);
+						LoginReqDto loginReqDto = new LoginReqDto(nickname.replaceAll(" ",""));
 						
 						
 						userListModel.addElement(nickname);
@@ -262,7 +266,7 @@ public class ChattingClient extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.");
+				title = JOptionPane.showInputDialog(null, "방제목을 입력해주세요.").replaceAll(" ","");
 
 				String kingName = nickname;
 				System.out.println("방장:" + kingName);
@@ -325,7 +329,7 @@ public class ChattingClient extends JFrame {
 					roomName = roomList.getModel().getElementAt(index);
 
 					System.out.println("조인:" + nickname);
-					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName, nickname);
+					JoinRoomReqDto joinRoomReqDto = new JoinRoomReqDto(roomName, nickname.replaceAll(" ",""));
 					String joinRoomJson = gson.toJson(joinRoomReqDto);
 
 					sendRequest("joinRoom", joinRoomJson);
@@ -379,6 +383,13 @@ public class ChattingClient extends JFrame {
 
 
 		JButton messageSendButton = new JButton("");
+		messageSendButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				sendMessage();
+				messageInput.setText("");
+			}
+		});
 		messageSendButton.setBounds(398, 707, 66, 42);
 		chattingRoomPanel.add(messageSendButton);
 
@@ -424,7 +435,7 @@ public class ChattingClient extends JFrame {
 		if(!messageInput.getText().isBlank()) {
 
 			/*from : room 객체에있는 유저들*/
-			MessageReqDto messageReqDto = new MessageReqDto(nickname, messageInput.getText());
+			MessageReqDto messageReqDto = new MessageReqDto(nickname.replaceAll(" ", ""), messageInput.getText());
 
 			sendRequest("message", gson.toJson(messageReqDto));
 

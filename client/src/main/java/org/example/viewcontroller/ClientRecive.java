@@ -123,6 +123,9 @@ public class ClientRecive extends Thread{
 			}
 		} catch (InterruptedException e) {
 			ChattingClient.getInstance().exit();
+		} catch (NullPointerException e) {
+			System.out.println("왜 로그인 안하고 그냥 끄냐?");
+			ChattingClient.getInstance().exit();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
