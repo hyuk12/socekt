@@ -28,9 +28,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.example.dto.request.CreateRoomReqDto;
 import org.example.dto.request.ExitReqDto;
+import org.example.dto.request.ForceQuitReqDto;
 import org.example.dto.request.JoinRoomReqDto;
 import org.example.dto.request.LoginReqDto;
 import org.example.dto.request.MessageReqDto;
@@ -104,6 +108,7 @@ public class ChattingClient extends JFrame {
 	private ChattingClient() {
 		
 		
+				
 		gson = new Gson();
 		userListModel = new DefaultListModel<>();
 		userList = new JList<String>(userListModel);
@@ -114,7 +119,9 @@ public class ChattingClient extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				int confirmResult = JOptionPane.showConfirmDialog(ChattingClient.this, "클라이언트 끄시겠습니까?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
 				if (confirmResult == JOptionPane.YES_OPTION) {
-					sendRequest("exit", null);
+					ForceQuitReqDto forceQuitReqDto = new ForceQuitReqDto(nickname);
+					
+					sendRequest("exit", gson.toJson(forceQuitReqDto));//gson => null
 				}
 			}
 			
@@ -189,7 +196,6 @@ public class ChattingClient extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (joinNickname.getText().isBlank()) {
 					JOptionPane.showMessageDialog(null, "please input nickname", "입장불가", JOptionPane.ERROR_MESSAGE);
-
 
 				} else{
 					joinButton.setEnabled(true);
@@ -380,8 +386,8 @@ public class ChattingClient extends JFrame {
 		messageSendButton.setContentAreaFilled(false);
 
 		
-		
 		messageInput = new JTextField();
+//		messageInput.setForeground(Color.RED);
 		messageInput.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -400,6 +406,7 @@ public class ChattingClient extends JFrame {
 		contentView = new JTextArea();
 		contentView.setEditable(false);
 		
+		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(6, 70, 457, 624);
 		scrollPane_1.setColumnHeaderView(contentView);
@@ -414,7 +421,7 @@ public class ChattingClient extends JFrame {
 		if(!messageInput.getText().isBlank()) {
 
 			/*from : room 객체에있는 유저들*/
-			MessageReqDto messageReqDto = new MessageReqDto(nickname,messageInput.getText());
+			MessageReqDto messageReqDto = new MessageReqDto(nickname, messageInput.getText());
 
 			sendRequest("message", gson.toJson(messageReqDto));
 

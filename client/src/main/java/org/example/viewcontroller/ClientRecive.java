@@ -1,38 +1,33 @@
 package org.example.viewcontroller;
 
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
-import com.google.gson.JsonIOException;
-import org.example.dto.response.*;
-import org.example.entity.Room;
-import org.example.entity.RoomInfo;
+import org.example.dto.response.CreateRoomRespDto;
+import org.example.dto.response.ExitRespDto;
+import org.example.dto.response.JoinRoomRespDto;
+import org.example.dto.response.MessageRespDto;
+import org.example.dto.response.ResponseDto;
 import org.example.view.ChattingClient;
 
-
 import com.google.gson.Gson;
-
+import com.google.gson.JsonIOException;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ClientRecive extends Thread{
-	
+
 	private final Socket socket;
 	private InputStream inputStream;
 	private Gson gson;
@@ -58,7 +53,7 @@ public class ClientRecive extends Thread{
 						String message = messageRespDto.getMessage();
 						String toUser = messageRespDto.getToUser();
 						
-						ChattingClient.getInstance().getContentView().append(" " + toUser + " > " + message + "\n");
+						ChattingClient.getInstance().getContentView().append(toUser + " > " + message + "\n");
 
 						break;
 						
@@ -69,13 +64,12 @@ public class ClientRecive extends Thread{
 							String rNames = createRoomRespDto.getRoomName();
 							
 
-							ChattingClient.getInstance().getRoomTitle().setText(rNames + "의 방입니다.");
+							ChattingClient.getInstance().getRoomTitle().setText("채팅방: " +rNames + "의 방입니다." );
 							ChattingClient.getInstance().getContentView().setText("");
 							ChattingClient.getInstance().getContentView().append(rNames + "방이 생성되었습니다."+"\n");
-						
+																
 						} catch (JsonIOException e) {
 							e.printStackTrace();
-
 						}
 
 						break;
@@ -101,7 +95,8 @@ public class ClientRecive extends Thread{
 						ExitRespDto exitRespDto = gson.fromJson(responseDto.getBody(), ExitRespDto.class);
 						String exitUsername = exitRespDto.getKingName();
 
-						ChattingClient.getInstance().getContentView().append( exitUsername+ "님이 나가셨습니다."+"\n");
+						ChattingClient.getInstance().getContentView().append(exitUsername+ "님이 나가셨습니다."+"\n");
+								
 						
 						break;
 						

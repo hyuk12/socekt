@@ -13,13 +13,13 @@ import java.util.List;
 
 import org.example.dto.request.CreateRoomReqDto;
 import org.example.dto.request.ExitReqDto;
+import org.example.dto.request.ForceQuitReqDto;
 import org.example.dto.request.JoinReqDto;
 import org.example.dto.request.JoinRoomReqDto;
 import org.example.dto.request.MessageReqDto;
 import org.example.dto.request.RequestDto;
 import org.example.dto.response.CreateRoomRespDto;
 import org.example.dto.response.ExitRespDto;
-import org.example.dto.response.JoinRespDto;
 import org.example.dto.response.JoinRoomRespDto;
 import org.example.dto.response.MessageRespDto;
 import org.example.dto.response.ResponseDto;
@@ -47,7 +47,7 @@ public class ServerThread extends Thread{
 	private ServerUtil serverUtil;
 	private boolean isRunning = true;
 
-	private String exitNickname;
+//	private String exitNickname;
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -85,7 +85,7 @@ public class ServerThread extends Thread{
 					String message = messageReqDto.getMessage();
 					String toUser = messageReqDto.getToUser();
 					
-					MessageRespDto messageRespDto = new MessageRespDto(message, toUser);
+					MessageRespDto messageRespDto = new MessageRespDto(toUser, message);
 					String messageJson = gson.toJson(messageRespDto);
 					
 					responseDto = new ResponseDto(requestDto.getResource(), "ok", messageJson);
@@ -100,9 +100,8 @@ public class ServerThread extends Thread{
 					room.getUsers().add(this);
 					rooms.add(room);
 					
-					String rn = "채팅방" + ": " + createRoomReqDto.getRoomName(); 
 					
-					CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(rn,createRoomReqDto.getRoomName());
+					CreateRoomRespDto createRoomRespDto = new CreateRoomRespDto(createRoomReqDto.getRoomName(), createRoomReqDto.getKingName());
 					responseDto = new ResponseDto(requestDto.getResource(), "ok", gson.toJson(createRoomRespDto));
 					
 					sendAll(responseDto, room.getUsers());
@@ -134,13 +133,16 @@ public class ServerThread extends Thread{
 
 				case "exitRoom":
 					ExitReqDto exitReqDto = gson.fromJson(requestDto.getBody(), ExitReqDto.class);
-					exitNickname = exitReqDto.getNickname();
+					String exitNickname = exitReqDto.getNickname();
 					
 					deleteRoomList(exitNickname);
 					
 					break;
 				case "exit":
-					deleteRoomList(exitNickname);
+					ForceQuitReqDto forceQuitReqDto = gson.fromJson(requestDto.getBody(), ForceQuitReqDto.class);
+					
+					deleteRoomList(forceQuitReqDto.getNickname());
+//					deleteRoomList(exitNickname);
 					isRunning = false;
 					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 					out.println(gson.toJson(new ResponseDto("exit", "ok", null)));
@@ -198,7 +200,6 @@ public class ServerThread extends Thread{
 		rooms.forEach(room -> {
 			roomNames.add("채팅방" + ": " + room.getRoomName());
 		});
-		
 		ResponseDto responseDto = new ResponseDto("reflashRoom", "ok", gson.toJson(roomNames));
 		
 		sendAll(responseDto, socketList);
